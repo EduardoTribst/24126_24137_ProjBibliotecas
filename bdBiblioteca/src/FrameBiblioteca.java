@@ -53,6 +53,8 @@ public class FrameBiblioteca extends JFrame {
         formExemplares  = new FormExemplares();
         formEmprestimos = new FormEmprestimos();
         formDevolucoes  = new FormDevolucoes();
+
+        add(formLogin);
     }
 
     public class FormLogin extends JFrame {
