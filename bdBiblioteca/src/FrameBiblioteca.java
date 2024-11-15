@@ -9,7 +9,11 @@ import java.sql.*;
 public class FrameBiblioteca extends JFrame {
     public static Connection conexaoDados = null;
 
-    private FormLogin formLogin;
+    public int idBibliotecaEscolhida;
+
+    public static FrameBiblioteca form;
+
+    private  FormLogin formLogin;
     private FormLivros formLivros;
     private FormExemplares formExemplares;
     private FormEmprestimos formEmprestimos;
@@ -17,16 +21,11 @@ public class FrameBiblioteca extends JFrame {
 
     private static ResultSet dadosDoSelect;
 
-    // toolbar que contém os botões de navegação entre os formulários
-    private JToolBar tbBotoesNavegacao;
-    // botões para abrir formulários
-    private JButton btnFormLivros, btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                FrameBiblioteca form = new FrameBiblioteca();
+                form = new FrameBiblioteca();
 
                 form.addWindowListener(
                         new WindowAdapter()
@@ -54,47 +53,6 @@ public class FrameBiblioteca extends JFrame {
         setSize(1000, 300);
         // apenas chame o evento windowClosing
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-        // inicializa tab de botoes de navegacao
-        tbBotoesNavegacao = new JToolBar();
-
-        btnFormLivros = new JButton("Livros");
-        btnFormLivros.setPreferredSize(new Dimension(85,45));
-        btnFormLivros.setVerticalTextPosition(SwingConstants.BOTTOM);
-        btnFormLivros.setHorizontalTextPosition(SwingConstants.CENTER);
-        btnFormLivros.setFocusPainted(false);
-
-        btnFormExemplares = new JButton("Exemplares");
-        btnFormExemplares.setPreferredSize(new Dimension(85,45));
-        btnFormExemplares.setVerticalTextPosition(SwingConstants.BOTTOM);
-        btnFormExemplares.setHorizontalTextPosition(SwingConstants.CENTER);
-        btnFormExemplares.setFocusPainted(false);
-
-        btnFormEmprestimos = new JButton("Empréstimos");
-        btnFormEmprestimos.setPreferredSize(new Dimension(85,45));
-        btnFormEmprestimos.setVerticalTextPosition(SwingConstants.BOTTOM);
-        btnFormEmprestimos.setHorizontalTextPosition(SwingConstants.CENTER);
-        btnFormEmprestimos.setFocusPainted(false);
-
-        btnFormDevolucoes = new JButton("Devoluções");
-        btnFormDevolucoes.setPreferredSize(new Dimension(85,45));
-        btnFormDevolucoes.setVerticalTextPosition(SwingConstants.BOTTOM);
-        btnFormDevolucoes.setHorizontalTextPosition(SwingConstants.CENTER);
-        btnFormDevolucoes.setFocusPainted(false);
-
-        tbBotoesNavegacao.setLayout(new FlowLayout());
-        tbBotoesNavegacao.add(btnFormLivros);
-        tbBotoesNavegacao.add(btnFormExemplares);
-        tbBotoesNavegacao.add(btnFormEmprestimos);
-        tbBotoesNavegacao.add(btnFormDevolucoes);
-
-        tbBotoesNavegacao.setRollover(true);
-
-        btnFormLivros.setEnabled(false);
-        btnFormExemplares.setEnabled(false);
-        btnFormEmprestimos.setEnabled(false);
-        btnFormDevolucoes.setEnabled(false);
-
         // inicializa os forms
 
         formLogin       = new FormLogin();
@@ -105,6 +63,7 @@ public class FrameBiblioteca extends JFrame {
 
 
         add(formLogin);
+        add(formLivros);
     }
 
     public class FormLogin extends JFrame {
@@ -115,9 +74,55 @@ public class FrameBiblioteca extends JFrame {
         private JPanel panInputs, panSelectBiblioteca, panBtnConectar, panMensagem;
         private JComboBox<String> cbxBiblioteca;
 
+        // toolbar que contém os botões de navegação entre os formulários
+        public JToolBar tbBotoesNavegacao;
+        // botões para abrir formulários
+        public JButton btnFormLivros, btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
+
         public FormLogin() {
             setTitle("Login");
             setSize(800, 300);
+
+            // inicializa tab de botoes de navegacao
+            tbBotoesNavegacao = new JToolBar();
+
+            btnFormLivros = new JButton("Livros");
+            btnFormLivros.setPreferredSize(new Dimension(85,45));
+            btnFormLivros.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormLivros.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormLivros.setFocusPainted(false);
+
+            btnFormExemplares = new JButton("Exemplares");
+            btnFormExemplares.setPreferredSize(new Dimension(85,45));
+            btnFormExemplares.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormExemplares.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormExemplares.setFocusPainted(false);
+
+            btnFormEmprestimos = new JButton("Empréstimos");
+            btnFormEmprestimos.setPreferredSize(new Dimension(85,45));
+            btnFormEmprestimos.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormEmprestimos.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormEmprestimos.setFocusPainted(false);
+
+            btnFormDevolucoes = new JButton("Devoluções");
+            btnFormDevolucoes.setPreferredSize(new Dimension(85,45));
+            btnFormDevolucoes.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormDevolucoes.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormDevolucoes.setFocusPainted(false);
+
+            tbBotoesNavegacao.setLayout(new FlowLayout());
+            tbBotoesNavegacao.add(btnFormLivros);
+            tbBotoesNavegacao.add(btnFormExemplares);
+            tbBotoesNavegacao.add(btnFormEmprestimos);
+            tbBotoesNavegacao.add(btnFormDevolucoes);
+
+            tbBotoesNavegacao.setRollover(true);
+
+            btnFormLivros.setEnabled(false);
+            btnFormExemplares.setEnabled(false);
+            btnFormEmprestimos.setEnabled(false);
+            btnFormDevolucoes.setEnabled(false);
+
 
             panInputs = new JPanel();
             panInputs.setLayout(new GridLayout(4, 2));
@@ -183,6 +188,25 @@ public class FrameBiblioteca extends JFrame {
                     }
             );
 
+            btnFormLivros.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            formLivros.setVisible(true);
+                        }
+                    }
+            );
+
+            cbxBiblioteca.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                        }
+                    }
+            );
+
             Container cntForm = getContentPane();
             cntForm.setLayout(new BorderLayout());
 
@@ -224,14 +248,7 @@ public class FrameBiblioteca extends JFrame {
         }
     }
 
-
     public class FormLivros extends JFrame {
-        private int idBibliotecaEscolhida;
-
-        private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
-        private JButton btnIncluir, btnSalvar, btnExcluir, btnBuscar, btnProximo, btnAnterior, btnInicio,
-                btnFinal, btnCancelar;
-
         private static ResultSet dadosDoSelect;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
 
         private static JTextField txtTitulo;
@@ -239,14 +256,10 @@ public class FrameBiblioteca extends JFrame {
 
         private static JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
 
-
-        public int getIdBibliotecaEscolhida() {
-            return idBibliotecaEscolhida;
-        }
-
-        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) {
-            this.idBibliotecaEscolhida = idBibliotecaEscolhida;
-        }
+        // toolbar que contém os botões de navegação entre os formulários
+        public JToolBar tbBotoesNavegacao;
+        // botões para abrir formulários
+        public JButton btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
 
         static private void exibirRegistro() throws SQLException
         {
@@ -284,107 +297,56 @@ public class FrameBiblioteca extends JFrame {
         }
 
         public FormLivros() {
-            // apenas chame o evento windowClosing
-            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            setTitle("Livros");
+            setSize(800, 300);
 
-            // Adiciorenamos os botões ao JToolBar que os conterá
-            tbBotoes = new JToolBar();  // orientação padrão é HORIZONTAL
+            // inicializa tab de botoes de navegacao
+            tbBotoesNavegacao = new JToolBar();
 
-            btnInicio = new JButton("Inicio", new ImageIcon(getClass().getResource("/resources/first.png")));
-            btnInicio.setPreferredSize(new Dimension(65,45));
-            btnInicio.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnInicio.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnInicio.setFocusPainted(false);       //remove uma borda que fica dentro do último botão pressionado
+            btnFormExemplares = new JButton("Exemplares");
+            btnFormExemplares.setPreferredSize(new Dimension(85,45));
+            btnFormExemplares.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormExemplares.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormExemplares.setFocusPainted(false);
 
-            btnAnterior = new JButton("Voltar", new ImageIcon(getClass().getResource("/resources/prior.png")));
-            btnAnterior.setPreferredSize(new Dimension(65,45));
-            btnAnterior.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnAnterior.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnAnterior.setFocusPainted(false);
+            btnFormEmprestimos = new JButton("Empréstimos");
+            btnFormEmprestimos.setPreferredSize(new Dimension(85,45));
+            btnFormEmprestimos.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormEmprestimos.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormEmprestimos.setFocusPainted(false);
 
-            btnProximo = new JButton("Avancar", new ImageIcon(getClass().getResource("/resources/next.png")));
-            btnProximo.setPreferredSize(new Dimension(65,45));
-            btnProximo.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnProximo.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnProximo.setFocusPainted(false);
+            btnFormDevolucoes = new JButton("Devoluções");
+            btnFormDevolucoes.setPreferredSize(new Dimension(85,45));
+            btnFormDevolucoes.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormDevolucoes.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormDevolucoes.setFocusPainted(false);
 
-            btnFinal = new JButton("Final", new ImageIcon(getClass().getResource("/resources//last.png")));
-            btnFinal.setPreferredSize(new Dimension(65,45));
-            btnFinal.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnFinal.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnFinal.setFocusPainted(false);
+            tbBotoesNavegacao.setLayout(new FlowLayout());
+            tbBotoesNavegacao.add(btnFormExemplares);
+            tbBotoesNavegacao.add(btnFormEmprestimos);
+            tbBotoesNavegacao.add(btnFormDevolucoes);
 
-            btnBuscar = new JButton("Buscar", new ImageIcon(getClass().getResource("/resources/find.png")));
-            btnBuscar.setPreferredSize(new Dimension(65,45));
-            btnBuscar.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnBuscar.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnBuscar.setFocusPainted(false);
+            tbBotoesNavegacao.setRollover(true);
 
-            btnIncluir = new JButton("Incluir", new ImageIcon(getClass().getResource("/resources/add.png")));
-            btnIncluir.setPreferredSize(new Dimension(65,45));
-            btnIncluir.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnIncluir.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnIncluir.setFocusPainted(false);
 
-            btnSalvar = new JButton("Atualizar", new ImageIcon(getClass().getResource("/resources/save.png")));
-            btnSalvar.setPreferredSize(new Dimension(65,45));
-            btnSalvar.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnSalvar.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnSalvar.setFocusPainted(false);
-
-            btnExcluir = new JButton("Excluir", new ImageIcon(getClass().getResource("/resources/minus.png")));
-            btnExcluir.setPreferredSize(new Dimension(65,45));
-            btnExcluir.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnExcluir.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnExcluir.setFocusPainted(false);
-
-            btnCancelar = new JButton("Cancelar", new ImageIcon(getClass().getResource("/resources/undo.png")));
-            btnCancelar.setPreferredSize(new Dimension(65,45));
-            btnCancelar.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnCancelar.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnCancelar.setFocusPainted(false);
-
-            // Os botões serão dispostos um ao lado do outro, fluindo da esquerda para a direita, de cima para baixo
-            // para isso usamos um gerenciador de layout da classe FlowLayout:
-            // estabelecemos o layout do tbBotoes como flowLayout
-            tbBotoes.setLayout(new FlowLayout());
-
-            tbBotoes.add(btnInicio);
-            tbBotoes.add(btnAnterior);
-            tbBotoes.add(btnProximo);
-            tbBotoes.add(btnFinal);
-            tbBotoes.addSeparator();    // coloca um separador entre esses botões e os seguintes
-
-            tbBotoes.add(btnBuscar);
-            tbBotoes.addSeparator();    // coloca um separador entre esses botões e os seguintes
-
-            tbBotoes.add(btnIncluir);
-            tbBotoes.add(btnSalvar);
-            tbBotoes.add(btnExcluir);
-            tbBotoes.add(btnCancelar);
-            tbBotoes.addSeparator();    // coloca um separador entre esses botões e os seguintes
-
-            // os botões apenas serão enfatizados visualmente quando o mouse passar sobre eles
-            tbBotoes.setRollover(true);
-
-            JPanel pnlGrade = new JPanel();     		 	// colocaremos JTable com os registros da tabela
-            JPanel pnlCampos = new JPanel();    		 // colocaremos os campos de digitação de dados
+            JPanel pnlGrade = new JPanel();    	 	// colocaremos JTable com os registros da tabela
+            JPanel pnlCampos = new JPanel();        // colocaremos os campos de digitação de dados
             JPanel pnlMensagem = new JPanel(); 		// colocaremos mensagens para o usuário
 
             JLabel lbMensagem = new JLabel("Mensagem:");	// Label para exibirmos mensagens
             pnlMensagem.add(lbMensagem);
             pnlMensagem.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-            Container cntForm = getContentPane(); 			// acessa a área de conteúdo do frame
-            cntForm.setLayout(new BorderLayout());			// configura o layout da área de conteúdo
-            cntForm.add(tbBotoes , BorderLayout.NORTH);		// Toolbar fica na parte superior
-            cntForm.add(pnlGrade , BorderLayout.WEST);		// Grade de registros fica à esquerda
-            cntForm.add(pnlCampos , BorderLayout.CENTER);		// Painel de campos fica no centro
-            cntForm.add(pnlMensagem , BorderLayout.SOUTH);	// Painel de mensagens fica abaixo
+            Container cntForm = getContentPane(); 			     // acessa a área de conteúdo do frame
+            cntForm.setLayout(new BorderLayout());			     // configura o layout da área de conteúdo
+            cntForm.add(tbBotoesNavegacao , BorderLayout.NORTH); // Toolbar fica na parte superior
+            cntForm.add(pnlGrade , BorderLayout.WEST);		     // Grade de registros fica à esquerda
+            cntForm.add(pnlCampos , BorderLayout.CENTER);	     // Painel de campos fica no centro
+            cntForm.add(pnlMensagem , BorderLayout.SOUTH);     	 // Painel de mensagens fica abaixo
 
             setVisible(false); // deixa invisivel ate o usuario selecionar esse form
 
-            Object [][] dadosLivro = { {0, "", "", ""}, { 1, "", "", ""} };
+            Object [][] dadosLivro = {};
             String[] titulosColunas = {"codigo Livro","titulo","id Autor","id Area"};
             tabLivro = new JTable(dadosLivro,  titulosColunas);
             JScrollPane barraRolagem = new JScrollPane(tabLivro);
@@ -397,9 +359,9 @@ public class FrameBiblioteca extends JFrame {
             spnIdArea      = new JSpinner();
 
             pnlCampos.add(new JLabel("Id Livro"));         // 1, 1
-            pnlCampos.add(spnCodLivro);                          // 1, 2
+            pnlCampos.add(spnCodLivro);                         // 1, 2
             pnlCampos.add(new JLabel("Título do Livro:")); // 2, 1
-            pnlCampos.add(txtTitulo);					    // 2, 2
+            pnlCampos.add(txtTitulo);					        // 2, 2
             pnlCampos.add(new JLabel("Id Autor:"));		// 3, 1
             pnlCampos.add(spnIdAutor);					        // 3, 2
             pnlCampos.add(new JLabel("Id Área:"));		    // 4, 1
@@ -602,39 +564,14 @@ public class FrameBiblioteca extends JFrame {
     }
 
     public class FormExemplares extends JFrame {
-        private int idBibliotecaEscolhida;
 
-        public int getIdBibliotecaEscolhida() {
-            return idBibliotecaEscolhida;
-        }
-
-        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) {
-            this.idBibliotecaEscolhida = idBibliotecaEscolhida;
-        }
     }
 
     public class FormEmprestimos extends JFrame {
-        private int idBibliotecaEscolhida;
 
-        public int getIdBibliotecaEscolhida() {
-            return idBibliotecaEscolhida;
-        }
-
-        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) {
-            this.idBibliotecaEscolhida = idBibliotecaEscolhida;
-        }
     }
 
     public class FormDevolucoes extends JFrame {
-        private int idBibliotecaEscolhida;
-
-        public int getIdBibliotecaEscolhida() {
-            return idBibliotecaEscolhida;
-        }
-
-        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) {
-            this.idBibliotecaEscolhida = idBibliotecaEscolhida;
-        }
 
     }
 }
