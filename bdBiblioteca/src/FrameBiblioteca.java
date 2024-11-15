@@ -159,8 +159,7 @@ public class FrameBiblioteca extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                ConexaoBD conexaoBD = new ConexaoBD(txtNomeBd.getText(), txtUsuario.getText(), txtSenha.getText());
-                                conexaoDados = conexaoBD.getConnection();
+                                conexaoDados = ConexaoBD.getConnection(txtServidor.getText(), txtNomeBd.getText(), txtUsuario.getText(), txtSenha.getText());
                                 labMensagem.setText("Mensagem: conectado!");
                                 cbxBiblioteca.setEnabled(true);
                             } catch (SQLException err) {

@@ -8,15 +8,14 @@ public class ConexaoBD {
     private static String USER;
     private static String PASSWORD;
 
-    public ConexaoBD(String databaseName, String user, String password) {
-        URL = "jdbc:sqlserver://regulus.cotuca.unicamp.br:1433;"+
-                "databaseName="+ databaseName +
+    public static Connection getConnection(String nomeServidor, String nomeBD, String usuario, String senha) throws SQLException {
+        URL = "jdbc:sqlserver://" + nomeServidor + ":1433;"+
+                "databaseName="+ nomeBD +
                 ";integratedSecurity=false;encrypt=true;trustServerCertificate=true";
-        USER = user;
-        PASSWORD = password;
-    }
+        USER = usuario;
+        PASSWORD = senha;
 
-    public static Connection getConnection() throws SQLException {
+
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
