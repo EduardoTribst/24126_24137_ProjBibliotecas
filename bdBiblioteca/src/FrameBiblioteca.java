@@ -207,6 +207,9 @@ public class FrameBiblioteca extends JFrame {
                     dadosDoSelect = comandoSQL.executeQuery(sql);
                     if (dadosDoSelect.next()) {
                         cbxBiblioteca.addItem(dadosDoSelect.getString("nome"));
+                        while (dadosDoSelect.next()) {
+                            cbxBiblioteca.addItem(dadosDoSelect.getString("nome"));
+                        }
                     } else {
                         JOptionPane.showMessageDialog(null, "Registro não encontrado!");
                     }
