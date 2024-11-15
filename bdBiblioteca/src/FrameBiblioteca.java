@@ -174,6 +174,7 @@ public class FrameBiblioteca extends JFrame {
                                 btnFormExemplares.setEnabled(true);
                                 btnFormEmprestimos.setEnabled(true);
                                 btnFormDevolucoes.setEnabled(true);
+                                preencherCbxBibliotecas();
                             } catch (SQLException err) {
                                 labMensagem.setText("Mensagem: Erro ao conectar ao BD");
                                 throw new RuntimeException(err);
@@ -194,6 +195,30 @@ public class FrameBiblioteca extends JFrame {
             setVisible(true);
 
         }
+
+        private void preencherCbxBibliotecas() {
+            String sql = "SELECT * FROM SisBib.biblioteca order by idBiblioteca";
+            try {
+                Statement comandoSQL = conexaoDados.createStatement(
+                        ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
+                        ResultSet.CONCUR_UPDATABLE        // ResultSet é atualizável
+                );
+                try {
+                    dadosDoSelect = comandoSQL.executeQuery(sql);
+                    if (dadosDoSelect.next()) {
+                        cbxBiblioteca.addItem(dadosDoSelect.getString("nome"));
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+                    }
+                }
+                catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 
@@ -206,10 +231,10 @@ public class FrameBiblioteca extends JFrame {
 
         private static ResultSet dadosDoSelect;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
 
-        private static JTextField txtTituloLivro;
-        private static JSpinner spnIdLivro, spnIdAutor, spnISBN, spnIdArea;
+        private static JTextField txtTitulo;
+        private static JSpinner spnCodLivro, spnIdAutor, spnIdArea;
 
-        private static JTable tabDepto;	// controle que exibe dados em formato tabular (linhas e colunas)
+        private static JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
 
 
         public int getIdBibliotecaEscolhida() {
@@ -224,16 +249,15 @@ public class FrameBiblioteca extends JFrame {
         {
             if (!dadosDoSelect.rowDeleted())
             {
-                spnIdLivro.setValue(dadosDoSelect.getInt("idLivro"));
-                txtTituloLivro.setText(dadosDoSelect.getString("tituloLivro"));
+                spnCodLivro.setValue(dadosDoSelect.getInt("codLivro"));
+                txtTitulo.setText(dadosDoSelect.getString("titulo"));
                 spnIdAutor.setValue(dadosDoSelect.getInt("idAutor"));
-                spnISBN.setValue(dadosDoSelect.getInt("ISBN"));
                 spnIdArea.setValue(dadosDoSelect.getInt("idArea"));
             }
         }
 
         private static void preencherDados() {
-            String sql = "SELECT * FROM biblioteca.livro order by NumDepto";
+            String sql = "SELECT * FROM SisBib.livro order by codLivro";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
                         ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
@@ -357,29 +381,26 @@ public class FrameBiblioteca extends JFrame {
 
             setVisible(false); // deixa invisivel ate o usuario selecionar esse form
 
-            Object [][] dadosDepto = { {0, "", "", ""}, { 1, "", "", ""} };
-            String[] titulosColunas = {"Num.Depto","Nome","Gerente","Inicio gerencia"};
-            tabDepto = new JTable(dadosDepto,  titulosColunas);
-            JScrollPane barraRolagem = new JScrollPane(tabDepto);
+            Object [][] dadosLivro = { {0, "", "", ""}, { 1, "", "", ""} };
+            String[] titulosColunas = {"codigo Livro","titulo","id Autor","id Area"};
+            tabLivro = new JTable(dadosLivro,  titulosColunas);
+            JScrollPane barraRolagem = new JScrollPane(tabLivro);
             pnlGrade.add(barraRolagem);
 
-            pnlCampos.setLayout(new GridLayout(5, 2));	//  4 linhas e 2 colunas
-            spnIdLivro     = new JSpinner();
-            txtTituloLivro = new JTextField();
+            pnlCampos.setLayout(new GridLayout(4, 2));	//  4 linhas e 2 colunas
+            spnCodLivro = new JSpinner();
+            txtTitulo = new JTextField();
             spnIdAutor     = new JSpinner();
-            spnISBN        = new JSpinner();
             spnIdArea      = new JSpinner();
 
             pnlCampos.add(new JLabel("Id Livro"));         // 1, 1
-            pnlCampos.add(spnIdLivro);                          // 1, 2
+            pnlCampos.add(spnCodLivro);                          // 1, 2
             pnlCampos.add(new JLabel("Título do Livro:")); // 2, 1
-            pnlCampos.add(txtTituloLivro);					    // 2, 2
+            pnlCampos.add(txtTitulo);					    // 2, 2
             pnlCampos.add(new JLabel("Id Autor:"));		// 3, 1
             pnlCampos.add(spnIdAutor);					        // 3, 2
-            pnlCampos.add(new JLabel("ISBN:"));		    // 4, 1
-            pnlCampos.add(spnISBN);					            // 4, 2
-            pnlCampos.add(new JLabel("Id Área:"));		    // 5, 1
-            pnlCampos.add(spnIdArea);					        // 5, 2
+            pnlCampos.add(new JLabel("Id Área:"));		    // 4, 1
+            pnlCampos.add(spnIdArea);					        // 4, 2
 
 
             // Operações CRUD
