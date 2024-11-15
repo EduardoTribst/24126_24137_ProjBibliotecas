@@ -75,7 +75,7 @@ public class FrameBiblioteca extends JFrame {
 
         public FormLogin() {
             setTitle("Login");
-            setSize(800, 600);
+            setSize(800, 300);
 
             tbBotoesNavegacao = new JToolBar();
 
@@ -110,6 +110,11 @@ public class FrameBiblioteca extends JFrame {
             tbBotoesNavegacao.add(btnFormDevolucoes);
 
             tbBotoesNavegacao.setRollover(true);
+
+            btnFormLivros.setEnabled(false);
+            btnFormExemplares.setEnabled(false);
+            btnFormEmprestimos.setEnabled(false);
+            btnFormDevolucoes.setEnabled(false);
 
             panInputs = new JPanel();
             panInputs.setLayout(new GridLayout(4, 2));
@@ -162,6 +167,10 @@ public class FrameBiblioteca extends JFrame {
                                 conexaoDados = ConexaoBD.getConnection(txtServidor.getText(), txtNomeBd.getText(), txtUsuario.getText(), txtSenha.getText());
                                 labMensagem.setText("Mensagem: conectado!");
                                 cbxBiblioteca.setEnabled(true);
+                                btnFormLivros.setEnabled(true);
+                                btnFormExemplares.setEnabled(true);
+                                btnFormEmprestimos.setEnabled(true);
+                                btnFormDevolucoes.setEnabled(true);
                             } catch (SQLException err) {
                                 labMensagem.setText("Mensagem: Erro ao conectar ao BD");
                                 throw new RuntimeException(err);
