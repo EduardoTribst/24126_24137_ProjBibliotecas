@@ -261,8 +261,6 @@ public class FrameBiblioteca extends JFrame {
         private JButton btnIncluir, btnSalvar, btnExcluir, btnBuscar, btnProximo, btnAnterior, btnInicio,
                 btnFinal, btnCancelar;
 
-        // toolbar que contém os botões de navegação entre os formulários
-        public JToolBar tbBotoesNavegacao;
         // botões para abrir formulários
         public JButton btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
 
@@ -303,35 +301,7 @@ public class FrameBiblioteca extends JFrame {
 
         public FormLivros() {
             setTitle("Livros");
-            setSize(800, 300);
-
-            // inicializa tab de botoes de navegacao
-            tbBotoesNavegacao = new JToolBar();
-
-            btnFormExemplares = new JButton("Exemplares");
-            btnFormExemplares.setPreferredSize(new Dimension(85,45));
-            btnFormExemplares.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnFormExemplares.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnFormExemplares.setFocusPainted(false);
-
-            btnFormEmprestimos = new JButton("Empréstimos");
-            btnFormEmprestimos.setPreferredSize(new Dimension(85,45));
-            btnFormEmprestimos.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnFormEmprestimos.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnFormEmprestimos.setFocusPainted(false);
-
-            btnFormDevolucoes = new JButton("Devoluções");
-            btnFormDevolucoes.setPreferredSize(new Dimension(85,45));
-            btnFormDevolucoes.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnFormDevolucoes.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnFormDevolucoes.setFocusPainted(false);
-
-            tbBotoesNavegacao.setLayout(new FlowLayout());
-            tbBotoesNavegacao.add(btnFormExemplares);
-            tbBotoesNavegacao.add(btnFormEmprestimos);
-            tbBotoesNavegacao.add(btnFormDevolucoes);
-
-            tbBotoesNavegacao.setRollover(true);
+            setSize(1000, 300);
 
             // Adiciorenamos os botões ao JToolBar que os conterá
             tbBotoes = new JToolBar();  // orientação padrão é HORIZONTAL
@@ -413,6 +383,29 @@ public class FrameBiblioteca extends JFrame {
             // os botões apenas serão enfatizados visualmente quando o mouse passar sobre eles
             tbBotoes.setRollover(true);
 
+            btnFormExemplares = new JButton("Exemplares");
+            btnFormExemplares.setPreferredSize(new Dimension(85,45));
+            btnFormExemplares.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormExemplares.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormExemplares.setFocusPainted(false);
+
+            btnFormEmprestimos = new JButton("Empréstimos");
+            btnFormEmprestimos.setPreferredSize(new Dimension(85,45));
+            btnFormEmprestimos.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormEmprestimos.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormEmprestimos.setFocusPainted(false);
+
+            btnFormDevolucoes = new JButton("Devoluções");
+            btnFormDevolucoes.setPreferredSize(new Dimension(85,45));
+            btnFormDevolucoes.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormDevolucoes.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormDevolucoes.setFocusPainted(false);
+
+            tbBotoes.add(btnFormExemplares);
+            tbBotoes.add(btnFormEmprestimos);
+            tbBotoes.add(btnFormDevolucoes);
+
+
             JPanel pnlGrade = new JPanel();    	 	// colocaremos JTable com os registros da tabela
             JPanel pnlCampos = new JPanel();        // colocaremos os campos de digitação de dados
             JPanel pnlMensagem = new JPanel(); 		// colocaremos mensagens para o usuário
@@ -423,7 +416,6 @@ public class FrameBiblioteca extends JFrame {
 
             Container cntForm = getContentPane(); 			     // acessa a área de conteúdo do frame
             cntForm.setLayout(new BorderLayout());			     // configura o layout da área de conteúdo
-            cntForm.add(tbBotoesNavegacao, BorderLayout.NORTH); // Toolbar fica na parte superior
             cntForm.add(tbBotoes, BorderLayout.NORTH);
             cntForm.add(pnlGrade , BorderLayout.WEST);		     // Grade de registros fica à esquerda
             cntForm.add(pnlCampos , BorderLayout.CENTER);	     // Painel de campos fica no centro
