@@ -256,6 +256,11 @@ public class FrameBiblioteca extends JFrame {
 
         private static JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
 
+        // acoes crud
+        private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
+        private JButton btnIncluir, btnSalvar, btnExcluir, btnBuscar, btnProximo, btnAnterior, btnInicio,
+                btnFinal, btnCancelar;
+
         // toolbar que contém os botões de navegação entre os formulários
         public JToolBar tbBotoesNavegacao;
         // botões para abrir formulários
@@ -328,6 +333,85 @@ public class FrameBiblioteca extends JFrame {
 
             tbBotoesNavegacao.setRollover(true);
 
+            // Adiciorenamos os botões ao JToolBar que os conterá
+            tbBotoes = new JToolBar();  // orientação padrão é HORIZONTAL
+
+            btnInicio = new JButton("Inicio", new ImageIcon(getClass().getResource("/resources/first.png")));
+            btnInicio.setPreferredSize(new Dimension(65,45));
+            btnInicio.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnInicio.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnInicio.setFocusPainted(false);       //remove uma borda que fica dentro do último botão pressionado
+
+            btnAnterior = new JButton("Voltar", new ImageIcon(getClass().getResource("/resources/prior.png")));
+            btnAnterior.setPreferredSize(new Dimension(65,45));
+            btnAnterior.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnAnterior.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnAnterior.setFocusPainted(false);
+
+            btnProximo = new JButton("Avancar", new ImageIcon(getClass().getResource("/resources/next.png")));
+            btnProximo.setPreferredSize(new Dimension(65,45));
+            btnProximo.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnProximo.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnProximo.setFocusPainted(false);
+
+            btnFinal = new JButton("Final", new ImageIcon(getClass().getResource("/resources//last.png")));
+            btnFinal.setPreferredSize(new Dimension(65,45));
+            btnFinal.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFinal.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFinal.setFocusPainted(false);
+
+            btnBuscar = new JButton("Buscar", new ImageIcon(getClass().getResource("/resources/find.png")));
+            btnBuscar.setPreferredSize(new Dimension(65,45));
+            btnBuscar.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnBuscar.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnBuscar.setFocusPainted(false);
+
+            btnIncluir = new JButton("Incluir", new ImageIcon(getClass().getResource("/resources/add.png")));
+            btnIncluir.setPreferredSize(new Dimension(65,45));
+            btnIncluir.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnIncluir.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnIncluir.setFocusPainted(false);
+
+            btnSalvar = new JButton("Atualizar", new ImageIcon(getClass().getResource("/resources/save.png")));
+            btnSalvar.setPreferredSize(new Dimension(65,45));
+            btnSalvar.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnSalvar.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnSalvar.setFocusPainted(false);
+
+            btnExcluir = new JButton("Excluir", new ImageIcon(getClass().getResource("/resources/minus.png")));
+            btnExcluir.setPreferredSize(new Dimension(65,45));
+            btnExcluir.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnExcluir.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnExcluir.setFocusPainted(false);
+
+            btnCancelar = new JButton("Cancelar", new ImageIcon(getClass().getResource("/resources/undo.png")));
+            btnCancelar.setPreferredSize(new Dimension(65,45));
+            btnCancelar.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnCancelar.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnCancelar.setFocusPainted(false);
+
+            // Os botões serão dispostos um ao lado do outro, fluindo da esquerda para a direita, de cima para baixo
+            // para isso usamos um gerenciador de layout da classe FlowLayout:
+            // estabelecemos o layout do tbBotoes como flowLayout
+            tbBotoes.setLayout(new FlowLayout());
+
+            tbBotoes.add(btnInicio);
+            tbBotoes.add(btnAnterior);
+            tbBotoes.add(btnProximo);
+            tbBotoes.add(btnFinal);
+            tbBotoes.addSeparator();    // coloca um separador entre esses botões e os seguintes
+
+            tbBotoes.add(btnBuscar);
+            tbBotoes.addSeparator();    // coloca um separador entre esses botões e os seguintes
+
+            tbBotoes.add(btnIncluir);
+            tbBotoes.add(btnSalvar);
+            tbBotoes.add(btnExcluir);
+            tbBotoes.add(btnCancelar);
+            tbBotoes.addSeparator();    // coloca um separador entre esses botões e os seguintes
+
+            // os botões apenas serão enfatizados visualmente quando o mouse passar sobre eles
+            tbBotoes.setRollover(true);
 
             JPanel pnlGrade = new JPanel();    	 	// colocaremos JTable com os registros da tabela
             JPanel pnlCampos = new JPanel();        // colocaremos os campos de digitação de dados
@@ -339,7 +423,8 @@ public class FrameBiblioteca extends JFrame {
 
             Container cntForm = getContentPane(); 			     // acessa a área de conteúdo do frame
             cntForm.setLayout(new BorderLayout());			     // configura o layout da área de conteúdo
-            cntForm.add(tbBotoesNavegacao , BorderLayout.NORTH); // Toolbar fica na parte superior
+            cntForm.add(tbBotoesNavegacao, BorderLayout.NORTH); // Toolbar fica na parte superior
+            cntForm.add(tbBotoes, BorderLayout.NORTH);
             cntForm.add(pnlGrade , BorderLayout.WEST);		     // Grade de registros fica à esquerda
             cntForm.add(pnlCampos , BorderLayout.CENTER);	     // Painel de campos fica no centro
             cntForm.add(pnlMensagem , BorderLayout.SOUTH);     	 // Painel de mensagens fica abaixo
