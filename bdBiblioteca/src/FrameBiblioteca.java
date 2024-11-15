@@ -9,11 +9,11 @@ import java.sql.*;
 public class FrameBiblioteca extends JFrame {
     public static Connection conexaoDados = null;
 
-    public int idBibliotecaEscolhida;
+    public String idBibliotecaEscolhida;
 
     public static FrameBiblioteca form;
 
-    private  FormLogin formLogin;
+    private FormLogin formLogin;
     private FormLivros formLivros;
     private FormExemplares formExemplares;
     private FormEmprestimos formEmprestimos;
@@ -194,6 +194,7 @@ public class FrameBiblioteca extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             setVisible(false);
                             formLivros.setVisible(true);
+                            formLivros.preencherDados();
                         }
                     }
             );
@@ -251,8 +252,7 @@ public class FrameBiblioteca extends JFrame {
     public class FormLivros extends JFrame {
         private static ResultSet dadosDoSelect;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
 
-        private static JTextField txtTitulo;
-        private static JSpinner spnCodLivro, spnIdAutor, spnIdArea;
+        private static JTextField txtCodLivro, txtTitulo, txtIdAutor, txtIdArea, txtISBN;
 
         private static JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
 
@@ -268,10 +268,11 @@ public class FrameBiblioteca extends JFrame {
         {
             if (!dadosDoSelect.rowDeleted())
             {
-                spnCodLivro.setValue(dadosDoSelect.getInt("codLivro"));
+                txtCodLivro.setText(dadosDoSelect.getString("codLivro"));
                 txtTitulo.setText(dadosDoSelect.getString("titulo"));
-                spnIdAutor.setValue(dadosDoSelect.getInt("idAutor"));
-                spnIdArea.setValue(dadosDoSelect.getInt("idArea"));
+                txtIdAutor.setText(String.valueOf(dadosDoSelect.getInt("idAutor")));
+                txtIdArea.setText(String.valueOf(dadosDoSelect.getInt("idArea")));
+                txtISBN.setText(dadosDoSelect.getString("ISBN"));
             }
         }
 
@@ -429,50 +430,52 @@ public class FrameBiblioteca extends JFrame {
             JScrollPane barraRolagem = new JScrollPane(tabLivro);
             pnlGrade.add(barraRolagem);
 
-            pnlCampos.setLayout(new GridLayout(4, 2));	//  4 linhas e 2 colunas
-            spnCodLivro = new JSpinner();
-            txtTitulo = new JTextField();
-            spnIdAutor     = new JSpinner();
-            spnIdArea      = new JSpinner();
+            pnlCampos.setLayout(new GridLayout(5, 2));	//  4 linhas e 2 colunas
+            txtCodLivro = new JTextField();
+            txtTitulo   = new JTextField();
+            txtIdAutor  = new JTextField();
+            txtIdArea   = new JTextField();
+            txtISBN     = new JTextField();
 
             pnlCampos.add(new JLabel("Id Livro"));         // 1, 1
-            pnlCampos.add(spnCodLivro);                         // 1, 2
+            pnlCampos.add(txtCodLivro);                         // 1, 2
             pnlCampos.add(new JLabel("Título do Livro:")); // 2, 1
             pnlCampos.add(txtTitulo);					        // 2, 2
             pnlCampos.add(new JLabel("Id Autor:"));		// 3, 1
-            pnlCampos.add(spnIdAutor);					        // 3, 2
+            pnlCampos.add(txtIdAutor);					        // 3, 2
             pnlCampos.add(new JLabel("Id Área:"));		    // 4, 1
-            pnlCampos.add(spnIdArea);					        // 4, 2
+            pnlCampos.add(txtIdArea);					        // 4, 2
+            pnlCampos.add(new JLabel("ISBN:"));            // 5, 1
+            pnlCampos.add(txtISBN);                             // 5, 2
 
 
             // Operações CRUD
             // Inserção
-//            btnIncluir.addActionListener(
-//                    new ActionListener()
-//                    {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e)
-//                        {    // Lógica da inclusão
-//                            try
-//                            {
-//                                dadosDoSelect.moveToInsertRow();
-//                                dadosDoSelect.updateInt("numDepto", Integer.parseInt(txtNumDepto.getText()));
-//                                dadosDoSelect.updateString("nomeDepto", txtNomeDepto.getText());
-//                                dadosDoSelect.updateString("gerente_numSegSocial", txtGerente_NSS.getText());
-//                                dadosDoSelect.updateDate("gerente_dataInicial", Date.valueOf(txtData_Gerente.getText()));
-//                                dadosDoSelect.insertRow();
-//                                JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
-//                                // dadosDoSelect.moveToCurrentRow();	// volta à linha original
-//                                // exibirRegistro();			// e a reexibe
-//                            }
-//                            catch (SQLException ex)
-//                            {
-//                                System.out.println(ex.getMessage());
-//                            }
-//                        }
-//                    }
-//            );
-//
+            btnIncluir.addActionListener(
+                    new ActionListener()
+                    {
+                        @Override
+                        public void actionPerformed(ActionEvent e)
+                        {    // Lógica da inclusão
+                            try
+                            {
+                                dadosDoSelect.moveToInsertRow();
+                                dadosDoSelect.updateString("codLivro", txtCodLivro.getText());
+                                dadosDoSelect.updateString("titulo", txtTitulo.getText());
+                                dadosDoSelect.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
+                                dadosDoSelect.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
+                                dadosDoSelect.updateString("ISBN", txtISBN.getText());
+                                dadosDoSelect.insertRow();
+                                JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
+                            }
+                            catch (SQLException ex)
+                            {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
+            );
+
 //            // Atualização
 //            btnSalvar.addActionListener(
 //                    new ActionListener()
@@ -523,42 +526,42 @@ public class FrameBiblioteca extends JFrame {
 //                        }
 //                    }
 //            );
-//
-//            // Consulta
-//            btnBuscar.addActionListener(
-//                    new ActionListener()
-//                    {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e)
-//                        {
-//                            try
-//                            {
-//                                int posicaoAnterior = dadosDoSelect.getRow();  // registro atual
-//                                int chaveProcurada = Integer.parseInt(txtNumDepto.getText());
-//                                dadosDoSelect.beforeFirst();      // posiciona antes do 1o registro
-//                                boolean achou = false;
-//                                while (! achou && dadosDoSelect.next())
-//                                {
-//                                    if (dadosDoSelect.getInt("numDepto") == chaveProcurada)
-//                                        achou = true;
-//                                }
-//                                if (!achou)
-//                                {
-//                                    JOptionPane.showMessageDialog(null, "Registro não encontrado!");
-//                                    dadosDoSelect.absolute(posicaoAnterior);  // retorna ao registro
-//                                    // anteriormente visível
-//                                }
-//                                exibirRegistro();   // exibe o registro encontrado ou o original
-//                            }
-//                            catch (SQLException exception)
-//                            {
-//                                throw new RuntimeException(exception);
-//                            }
-//                        }
-//                    }
-//            );
-//
-//
+
+            // Consulta
+            btnBuscar.addActionListener(
+                    new ActionListener()
+                    {
+                        @Override
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            try
+                            {
+                                int posicaoAnterior = dadosDoSelect.getRow();  // registro atual
+                                String chaveProcurada = txtCodLivro.getText();
+                                dadosDoSelect.beforeFirst();      // posiciona antes do 1o registro
+                                boolean achou = false;
+                                while (! achou && dadosDoSelect.next())
+                                {
+                                    if (dadosDoSelect.getString("codLivro").compareTo(chaveProcurada) == 0)
+                                        achou = true;
+                                }
+                                if (!achou)
+                                {
+                                    JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+                                    dadosDoSelect.absolute(posicaoAnterior);  // retorna ao registro
+                                                                              // anteriormente visível
+                                }
+                                exibirRegistro();   // exibe o registro encontrado ou o original
+                            }
+                            catch (SQLException exception)
+                            {
+                                throw new RuntimeException(exception);
+                            }
+                        }
+                    }
+            );
+
+
 //            // Navegação entre registros
 //
 //            btnInicio.addActionListener(
