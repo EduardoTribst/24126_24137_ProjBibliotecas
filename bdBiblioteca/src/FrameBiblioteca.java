@@ -50,7 +50,7 @@ public class FrameBiblioteca extends JFrame {
 
     public FrameBiblioteca() { // inicializa as coisas
         setTitle("Manutencao de Bibliotecas");
-        setSize(1000, 300);
+        setSize(1000, 500);
         // apenas chame o evento windowClosing
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // inicializa os forms
@@ -211,11 +211,21 @@ public class FrameBiblioteca extends JFrame {
             Container cntForm = getContentPane();
             cntForm.setLayout(new BorderLayout());
 
+            JPanel southPanel = new JPanel(new BorderLayout());
+            southPanel.add(panMensagem, BorderLayout.NORTH);
+            southPanel.add(panBtnConectar, BorderLayout.WEST);
+            southPanel.add(panSelectBiblioteca, BorderLayout.SOUTH);
+
+            JPanel westPanel = new JPanel(new BorderLayout());
+            westPanel.add(panInputs, BorderLayout.NORTH);
+            westPanel.add(southPanel, BorderLayout.SOUTH);
+
             cntForm.add(tbBotoesNavegacao, BorderLayout.NORTH);
-            cntForm.add(panInputs, BorderLayout.WEST);
-            cntForm.add(panBtnConectar, BorderLayout.CENTER);
-            cntForm.add(panSelectBiblioteca, BorderLayout.EAST);
-            cntForm.add(panMensagem, BorderLayout.SOUTH);
+            //cntForm.add(panInputs, BorderLayout.WEST);
+            //cntForm.add(panBtnConectar, BorderLayout.CENTER);
+            //cntForm.add(panSelectBiblioteca, BorderLayout.EAST);
+            //cntForm.add(panMensagem, BorderLayout.SOUTH);
+            cntForm.add(westPanel, BorderLayout.WEST);
 
             setVisible(true);
 
