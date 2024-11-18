@@ -289,8 +289,7 @@ public class FrameBiblioteca extends JFrame {
         }
 
         private static void preencherDados() {
-            //String sql = "SELECT * FROM SisBib.Livro  order by codLivro";
-            String sql = "SELECT * FROM SisBib.Livro";
+            String sql = "SELECT * FROM SisBib.Livro order by codLivro";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
                         ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
@@ -503,56 +502,54 @@ public class FrameBiblioteca extends JFrame {
                     }
             );
 
-//            // Atualização
-//            btnSalvar.addActionListener(
-//                    new ActionListener()
-//                    {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e)
-//                        {        // lógica da atualização
-//                            try
-//                            {
-//                                // não alteraremos a chave primária numDepto
-//                                dadosDoSelect.updateString("nomeDepto", txtNomeDepto.getText());
-//                                dadosDoSelect.updateString("gerente_numSegSocial",
-//                                        txtGerente_NSS.getText());
-//                                dadosDoSelect.updateDate("gerente_dataInicial",
-//                                        Date.valueOf(txtData_Gerente.getText()));
-//                                dadosDoSelect.updateRow();
-//                                JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
-//                            }
-//                            catch (SQLException ex)
-//                            {
-//                                System.out.println(ex.getMessage());
-//                            }
-//                        }
-//                    }
-//            );
-//
-//            // Exclusão
-//            btnExcluir.addActionListener(
-//                    new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e)
-//                        {
-//                            try
-//                            {
-//                                if (JOptionPane.showConfirmDialog(
-//                                        null, "Deseja realmente excluir?") ==
-//                                        JOptionPane.OK_OPTION)
-//                                {
-//                                    dadosDoSelect.deleteRow();
-//                                    JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
-//                                    exibirRegistro();   // exibe o próximo registro
-//                                }
-//                            }
-//                            catch (SQLException ex)
-//                            {
-//                                System.out.println(ex.getMessage());
-//                            }
-//                        }
-//                    }
-//            );
+            // Atualização
+            btnSalvar.addActionListener(
+                    new ActionListener()
+                    {
+                        @Override
+                        public void actionPerformed(ActionEvent e)
+                        {        // lógica da atualização
+                            try
+                            {
+                                dadosDoSelect.updateString("titulo", txtTitulo.getText());
+                                dadosDoSelect.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
+                                dadosDoSelect.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
+                                dadosDoSelect.updateString("ISBN", txtISBN.getText());
+                                dadosDoSelect.updateRow();
+                                JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
+                            }
+                            catch (SQLException ex)
+                            {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
+            );
+
+            // Exclusão
+            btnExcluir.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            try
+                            {
+                                if (JOptionPane.showConfirmDialog(
+                                        null, "Deseja realmente excluir?") ==
+                                        JOptionPane.OK_OPTION)
+                                {
+                                    dadosDoSelect.deleteRow();
+                                    JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
+                                    exibirRegistro();   // exibe o próximo registro
+                                }
+                            }
+                            catch (SQLException ex)
+                            {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
+            );
 
             // Consulta
             btnBuscar.addActionListener(
@@ -589,83 +586,83 @@ public class FrameBiblioteca extends JFrame {
             );
 
 
-//            // Navegação entre registros
-//
-//            btnInicio.addActionListener(
-//                    new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            try {
-//                                if (dadosDoSelect.first()) {
-//                                    exibirRegistro();
-//                                }
-//                                else {
-//                                    JOptionPane.showMessageDialog(null, "Não achou Primeiro registro!");
-//                                }
-//                            }
-//                            catch (SQLException ex) {
-//                                ex.printStackTrace();
-//                            }
-//                        }
-//                    }
-//            );
-//
-//            btnAnterior.addActionListener(
-//                    new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            try {
-//                                if (dadosDoSelect.previous()) {
-//                                    exibirRegistro();
-//                                }
-//                                else {
-//                                    JOptionPane.showMessageDialog(null, "Não achou Registro anterior!");
-//                                }
-//                            }
-//                            catch (SQLException ex) {
-//                                ex.printStackTrace();
-//                            }
-//                        }
-//                    }
-//            );
-//
-//            btnProximo.addActionListener(
-//                    new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            try {
-//                                if (dadosDoSelect.next()) {
-//                                    exibirRegistro();
-//                                }
-//                                else {
-//                                    JOptionPane.showMessageDialog(null, "Não achou próximo registro!");
-//                                }
-//                            }
-//                            catch (SQLException ex) {
-//                                ex.printStackTrace();
-//                            }
-//                        }
-//                    }
-//            );
-//
-//            btnFinal.addActionListener(
-//                    new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            try {
-//                                if (dadosDoSelect.last()) {
-//                                    exibirRegistro();
-//                                }
-//                                else {
-//                                    JOptionPane.showMessageDialog(null, "Não achou Último registro!");
-//                                }
-//                            }
-//                            catch (SQLException ex) {
-//                                ex.printStackTrace();
-//                            }
-//                        }
-//                    }
-//            );
+            // Navegação entre registros
+
+            btnInicio.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                if (dadosDoSelect.first()) {
+                                    exibirRegistro();
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(null, "Não achou Primeiro registro!");
+                                }
+                            }
+                            catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+            );
+
+            btnAnterior.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                if (dadosDoSelect.previous()) {
+                                    exibirRegistro();
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(null, "Não achou Registro anterior!");
+                                }
+                            }
+                            catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+            );
+
+            btnProximo.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                if (dadosDoSelect.next()) {
+                                    exibirRegistro();
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(null, "Não achou próximo registro!");
+                                }
+                            }
+                            catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+            );
+
+            btnFinal.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                if (dadosDoSelect.last()) {
+                                    exibirRegistro();
+                                }
+                                else {
+                                    JOptionPane.showMessageDialog(null, "Não achou Último registro!");
+                                }
+                            }
+                            catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+            );
         }
 
     }
