@@ -328,7 +328,7 @@ public class FrameBiblioteca extends JFrame {
 
         public static void preencherTabela() throws SQLException {
             do{
-                // preenche tabela
+                tabLivro.addRow
             }
             while (dadosDoSelect.next());
         }
@@ -680,7 +680,7 @@ public class FrameBiblioteca extends JFrame {
 
         private static JTextField txtIdExemplar, txtIdBiblioteca, txtCodLivro, txtNumeroExemplar;
 
-        private static JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
+        private static JTable tabExemplar;	// controle que exibe dados em formato tabular (linhas e colunas)
 
         // acoes crud
         private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
@@ -859,8 +859,8 @@ public class FrameBiblioteca extends JFrame {
 
             Object [][] dadosLivro = {};
             String[] titulosColunas = {"Id Exemplar","Id Biblioteca","Codigo Livro","Número Exemplar"};
-            tabLivro = new JTable(dadosLivro,  titulosColunas);
-            JScrollPane barraRolagem = new JScrollPane(tabLivro);
+            tabExemplar = new JTable(dadosLivro,  titulosColunas);
+            JScrollPane barraRolagem = new JScrollPane(tabExemplar);
             pnlGrade.add(barraRolagem);
 
             pnlCampos.setLayout(new GridLayout(4, 2));	//  4 linhas e 2 colunas
