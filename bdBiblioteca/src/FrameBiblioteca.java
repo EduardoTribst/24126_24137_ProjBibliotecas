@@ -70,8 +70,8 @@ public class FrameBiblioteca extends JFrame {
 
     public class FormLogin extends JFrame {
         private JLabel labMensagem;
-        private JTextField txtServidor, txtNomeBd, txtUsuario, txtSenha;
-        //        private JPasswordField pswfPassword;
+        private JTextField txtServidor, txtNomeBd, txtUsuario;
+        private JPasswordField pswfPassword;
         private JButton btnConectar;
         private JPanel panInputs, panSelectBiblioteca, panBtnConectar, panMensagem;
         private JComboBox<String> cbxBiblioteca;
@@ -135,8 +135,8 @@ public class FrameBiblioteca extends JFrame {
             txtNomeBd.setPreferredSize(new Dimension(200, 50));
             txtUsuario = new JTextField();
             txtUsuario.setPreferredSize(new Dimension(200, 50));
-            txtSenha = new JTextField();
-            txtSenha.setPreferredSize(new Dimension(200, 50));
+            pswfPassword = new JPasswordField();
+            pswfPassword.setPreferredSize(new Dimension(200, 50));
 
             panInputs.add(new JLabel("Servidor:"));
             panInputs.add(txtServidor);
@@ -145,7 +145,7 @@ public class FrameBiblioteca extends JFrame {
             panInputs.add(new JLabel("Usuário:"));
             panInputs.add(txtUsuario);
             panInputs.add(new JLabel("Senha:"));
-            panInputs.add(txtSenha);
+            panInputs.add(pswfPassword);
 
             panBtnConectar = new JPanel();
             btnConectar = new JButton();
@@ -174,7 +174,7 @@ public class FrameBiblioteca extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                conexaoDados = ConexaoBD.getConnection(txtServidor.getText(), txtNomeBd.getText(), txtUsuario.getText(), txtSenha.getText());
+                                conexaoDados = ConexaoBD.getConnection(txtServidor.getText(), txtNomeBd.getText(), txtUsuario.getText(), pswfPassword.getPassword());
                                 labMensagem.setText("Mensagem: conectado!");
                                 cbxBiblioteca.setEnabled(true);
                                 btnFormLivros.setEnabled(true);
