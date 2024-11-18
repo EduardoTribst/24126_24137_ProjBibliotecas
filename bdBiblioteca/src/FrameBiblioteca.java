@@ -81,7 +81,7 @@ public class FrameBiblioteca extends JFrame {
 
         public FormLogin() {
             setTitle("Login");
-            setSize(800, 300);
+            setSize(800, 400);
 
             // inicializa tab de botoes de navegacao
             tbBotoesNavegacao = new JToolBar();
@@ -147,7 +147,7 @@ public class FrameBiblioteca extends JFrame {
 
             panBtnConectar = new JPanel();
             btnConectar = new JButton();
-            btnConectar.setPreferredSize(new Dimension(120, 50));
+            btnConectar.setPreferredSize(new Dimension(100, 30));
             btnConectar.setText("Conectar");
             btnConectar.setVerticalTextPosition(SwingConstants.BOTTOM);
             btnConectar.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -213,7 +213,7 @@ public class FrameBiblioteca extends JFrame {
 
             JPanel southPanel = new JPanel(new BorderLayout());
             southPanel.add(panMensagem, BorderLayout.NORTH);
-            southPanel.add(panBtnConectar, BorderLayout.WEST);
+            southPanel.add(panBtnConectar, BorderLayout.CENTER);
             southPanel.add(panSelectBiblioteca, BorderLayout.SOUTH);
 
             JPanel westPanel = new JPanel(new BorderLayout());
@@ -287,7 +287,8 @@ public class FrameBiblioteca extends JFrame {
         }
 
         private static void preencherDados() {
-            String sql = "SELECT * FROM SisBib.livro order by codLivro";
+            //String sql = "SELECT * FROM SisBib.Livro  order by codLivro";
+            String sql = "SELECT * FROM SisBib.Livro";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
                         ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
