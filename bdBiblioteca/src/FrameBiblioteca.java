@@ -1,3 +1,5 @@
+import com.sun.tools.jconsole.JConsoleContext;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -296,8 +298,10 @@ public class FrameBiblioteca extends JFrame {
                 );
                 try {
                     dadosDoSelect = comandoSQL.executeQuery(sql);
+                    System.out.print(dadosDoSelect);
                     if (dadosDoSelect.next()) {
                         exibirRegistro();
+                        //preencherTabela();
                     } else {
                         JOptionPane.showMessageDialog(null, "Registro não encontrado!");
                     }
@@ -310,6 +314,18 @@ public class FrameBiblioteca extends JFrame {
                 ex.printStackTrace();
             }
         }
+
+        public static void preencherTabela() throws SQLException {
+            do{
+                txtCodLivro.setText(dadosDoSelect.getString("codLivro"));
+                txtTitulo.setText(dadosDoSelect.getString("titulo"));
+                txtIdAutor.setText(String.valueOf(dadosDoSelect.getInt("idAutor")));
+                txtIdArea.setText(String.valueOf(dadosDoSelect.getInt("idArea")));
+                txtISBN.setText(dadosDoSelect.getString("ISBN"));
+            }
+            while (dadosDoSelect.next());
+        }
+
 
         public FormLivros() {
             setTitle("Livros");
