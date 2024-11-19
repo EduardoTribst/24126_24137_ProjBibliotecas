@@ -9,8 +9,6 @@ import java.sql.*;
 public class FrameBiblioteca extends JFrame {
     public static Connection conexaoDados = null;
 
-    public int idBibliotecaEscolhida;
-
     public static FrameBiblioteca form;
 
     private FormLogin formLogin;
@@ -78,6 +76,22 @@ public class FrameBiblioteca extends JFrame {
         public JToolBar tbBotoesNavegacao;
         // botões para abrir formulários
         public JButton btnFormLivros, btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
+
+        // id biblioteca escolhida
+        private int idBibliotecaEscolhida;
+
+        public int getIdBibliotecaEscolhida() {
+            return idBibliotecaEscolhida;
+        }
+
+        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) throws Exception {
+            if (idBibliotecaEscolhida > 0) {
+                this.idBibliotecaEscolhida = idBibliotecaEscolhida;
+            }
+            else {
+                throw new Exception("O id deve ser maior que 0");
+            }
+        }
 
         public FormLogin() {
             setTitle("Login");
@@ -189,8 +203,57 @@ public class FrameBiblioteca extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             setVisible(false);
+                            try {
+                                formLivros.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
                             formLivros.setVisible(true);
-                            formLivros.preencherDados();
+                        }
+                    }
+            );
+
+            btnFormExemplares.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formExemplares.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            formExemplares.setVisible(true);
+                        }
+                    }
+            );
+
+            btnFormEmprestimos.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            formEmprestimos.setVisible(true);
+                        }
+                    }
+            );
+
+            btnFormDevolucoes.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formDevolucoes.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            formDevolucoes.setVisible(true);
                         }
                     }
             );
@@ -286,7 +349,23 @@ public class FrameBiblioteca extends JFrame {
                 btnFinal, btnCancelar;
 
         // botões para abrir formulários
-        public JButton btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
+        private JButton btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
+
+        // id biblioteca escolhida
+        private int idBibliotecaEscolhida;
+
+        public int getIdBibliotecaEscolhida() {
+            return idBibliotecaEscolhida;
+        }
+
+        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) throws Exception {
+            if (idBibliotecaEscolhida > 0) {
+                this.idBibliotecaEscolhida = idBibliotecaEscolhida;
+            }
+            else {
+                throw new Exception("O id deve ser maior que 0");
+            }
+        }
 
         static private void exibirRegistro() throws SQLException
         {
@@ -328,7 +407,7 @@ public class FrameBiblioteca extends JFrame {
 
         public static void preencherTabela() throws SQLException {
             do{
-                tabLivro.addRow
+                // preencher tabela
             }
             while (dadosDoSelect.next());
         }
@@ -481,7 +560,6 @@ public class FrameBiblioteca extends JFrame {
             pnlCampos.add(txtIdArea);					        // 4, 2
             pnlCampos.add(new JLabel("ISBN:"));            // 5, 1
             pnlCampos.add(txtISBN);                             // 5, 2
-
 
             // Operações CRUD
             // Inserção
@@ -671,8 +749,55 @@ public class FrameBiblioteca extends JFrame {
                         }
                     }
             );
-        }
 
+            // event listeners dos botoes de forms
+
+            btnFormExemplares.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formExemplares.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            formExemplares.setVisible(true);
+                        }
+                    }
+            );
+
+            btnFormEmprestimos.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            formEmprestimos.setVisible(true);
+                        }
+                    }
+            );
+
+            btnFormDevolucoes.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formDevolucoes.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            formDevolucoes.setVisible(true);
+                        }
+                    }
+            );
+
+        }
     }
 
     public class FormExemplares extends JFrame {
@@ -690,6 +815,22 @@ public class FrameBiblioteca extends JFrame {
         // botões para abrir formulários
         public JButton btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
 
+        // id biblioteca escolhida
+        private static int idBibliotecaEscolhida;
+
+        public int getIdBibliotecaEscolhida() {
+            return idBibliotecaEscolhida;
+        }
+
+        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) throws Exception {
+            if (idBibliotecaEscolhida > 0) {
+                this.idBibliotecaEscolhida = idBibliotecaEscolhida;
+            }
+            else {
+                throw new Exception("O id deve ser maior que 0");
+            }
+        }
+
         static private void exibirRegistro() throws SQLException {
             if (!dadosDoSelect.rowDeleted()) {
                 txtIdExemplar.setText(String.valueOf(dadosDoSelect.getInt("idExemplar")));
@@ -700,7 +841,7 @@ public class FrameBiblioteca extends JFrame {
         }
 
         private static void preencherDados() {
-            String sql = "SELECT * FROM SisBib.Exemplar where idBiblioteca = " + String.valueOf(form.idBibliotecaEscolhida) + " order by idExemplar";
+            String sql = "SELECT * FROM SisBib.Exemplar where idBiblioteca = " + String.valueOf(idBibliotecaEscolhida) + " order by idExemplar";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
                         ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
@@ -1070,10 +1211,43 @@ public class FrameBiblioteca extends JFrame {
     }
 
     public class FormEmprestimos extends JFrame {
+        // botoes e coisas do tipo
 
+
+        // id biblioteca escolhida
+        private int idBibliotecaEscolhida;
+
+        public int getIdBibliotecaEscolhida() {
+            return idBibliotecaEscolhida;
+        }
+
+        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) throws Exception {
+            if (idBibliotecaEscolhida > 0) {
+                this.idBibliotecaEscolhida = idBibliotecaEscolhida;
+            }
+            else {
+                throw new Exception("O id deve ser maior que 0");
+            }
+        }
     }
 
     public class FormDevolucoes extends JFrame {
+        // botoes e coisas do tipo sei la mo preguica slk
 
+        // id biblioteca escolhida
+        private int idBibliotecaEscolhida;
+
+        public int getIdBibliotecaEscolhida() {
+            return idBibliotecaEscolhida;
+        }
+
+        public void setIdBibliotecaEscolhida(int idBibliotecaEscolhida) throws Exception {
+            if (idBibliotecaEscolhida > 0) {
+                this.idBibliotecaEscolhida = idBibliotecaEscolhida;
+            }
+            else {
+                throw new Exception("O id deve ser maior que 0");
+            }
+        }
     }
 }
