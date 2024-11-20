@@ -17,8 +17,6 @@ public class FrameBiblioteca extends JFrame {
     private FormEmprestimos formEmprestimos;
     private FormDevolucoes formDevolucoes;
 
-    private static ResultSet dadosDoSelect;
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -72,10 +70,16 @@ public class FrameBiblioteca extends JFrame {
         private JPanel panInputs, panSelectBiblioteca, panBtnConectar, panMensagem;
         private JComboBox<String> cbxBiblioteca;
 
+        // dados
+        private static ResultSet dadosDoSelect;
+
         // toolbar que contém os botões de navegação entre os formulários
-        public JToolBar tbBotoesNavegacao;
+        private JToolBar tbBotoesNavegacao;
         // botões para abrir formulários
-        public JButton btnFormLivros, btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
+        private JButton btnFormLivros, btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
+
+        // outras vars
+        private boolean escolheuBiblioteca;
 
         // id biblioteca escolhida
         private int idBibliotecaEscolhida;
@@ -181,6 +185,8 @@ public class FrameBiblioteca extends JFrame {
             panMensagem.setLayout(new FlowLayout(FlowLayout.LEFT));
             panMensagem.add(labMensagem);
 
+            escolheuBiblioteca = false;
+
             btnConectar.addActionListener(
                     new ActionListener() {
                         @Override
@@ -262,29 +268,34 @@ public class FrameBiblioteca extends JFrame {
                     new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            String sql = "SELECT idBiblioteca FROM SisBib.biblioteca where nome = " + String.valueOf(cbxBiblioteca.getSelectedItem());
-                            try {
-                                Statement comandoSQL = conexaoDados.createStatement();
+                            if (!escolheuBiblioteca) {
+                                escolheuBiblioteca = true;
+                            }
+                            else {
+                                String sql = "SELECT idBiblioteca FROM SisBib.biblioteca where nome = '" + cbxBiblioteca.getSelectedItem() + "'";
                                 try {
-                                    dadosDoSelect = comandoSQL.executeQuery(sql);
-                                    if (dadosDoSelect.next()) {
-                                        idBibliotecaEscolhida = dadosDoSelect.getInt("idBiblioteca");
-                                    } else {
-                                        JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+                                    Statement comandoSQL = conexaoDados.createStatement();
+                                    try {
+                                        dadosDoSelect = comandoSQL.executeQuery(sql);
+                                        if (dadosDoSelect.next()) {
+                                            idBibliotecaEscolhida = dadosDoSelect.getInt("idBiblioteca");
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+                                        }
+                                    }
+                                    catch (SQLException ex) {
+                                        ex.printStackTrace();
                                     }
                                 }
                                 catch (SQLException ex) {
                                     ex.printStackTrace();
                                 }
-                            }
-                            catch (SQLException ex) {
-                                ex.printStackTrace();
-                            }
 
-                            btnFormLivros.setEnabled(true);
-                            btnFormExemplares.setEnabled(true);
-                            btnFormEmprestimos.setEnabled(true);
-                            btnFormDevolucoes.setEnabled(true);
+                                btnFormLivros.setEnabled(true);
+                                btnFormExemplares.setEnabled(true);
+                                btnFormEmprestimos.setEnabled(true);
+                                btnFormDevolucoes.setEnabled(true);
+                            }
                         }
                     }
             );
@@ -796,7 +807,6 @@ public class FrameBiblioteca extends JFrame {
                         }
                     }
             );
-
         }
     }
 
@@ -813,7 +823,7 @@ public class FrameBiblioteca extends JFrame {
                 btnFinal, btnCancelar;
 
         // botões para abrir formulários
-        public JButton btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
+        private JButton btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
 
         // id biblioteca escolhida
         private static int idBibliotecaEscolhida;
@@ -841,7 +851,7 @@ public class FrameBiblioteca extends JFrame {
         }
 
         private static void preencherDados() {
-            String sql = "SELECT * FROM SisBib.Exemplar where idBiblioteca = " + String.valueOf(idBibliotecaEscolhida) + " order by idExemplar";
+            String sql = "SELECT * FROM SisBib.Exemplar where idBiblioteca = '" + idBibliotecaEscolhida + "' order by idExemplar";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
                         ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
