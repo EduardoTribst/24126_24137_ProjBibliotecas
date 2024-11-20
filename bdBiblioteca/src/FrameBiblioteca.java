@@ -210,11 +210,14 @@ public class FrameBiblioteca extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             setVisible(false);
                             try {
+                                formLivros.setVisible(true);
                                 formLivros.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                                formLivros.preencherDados();
+                                formLivros.exibirRegistro();
+                                formLivros.preencherTabela();
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
-                            formLivros.setVisible(true);
                         }
                     }
             );
@@ -225,11 +228,14 @@ public class FrameBiblioteca extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             setVisible(false);
                             try {
+                                formExemplares.setVisible(true);
                                 formExemplares.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                                formExemplares.preencherDados();
+                                formExemplares.exibirRegistro();
+                                formExemplares.preencherTabela();
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
-                            formExemplares.setVisible(true);
                         }
                     }
             );
@@ -240,11 +246,14 @@ public class FrameBiblioteca extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             setVisible(false);
                             try {
+                                formEmprestimos.setVisible(true);
                                 formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+//                                formEmprestimos.preencherDados();
+//                                formEmprestimos.exibirRegistro();
+//                                formEmprestimos.preencherTabela();
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
-                            formEmprestimos.setVisible(true);
                         }
                     }
             );
@@ -255,11 +264,14 @@ public class FrameBiblioteca extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             setVisible(false);
                             try {
+                                formDevolucoes.setVisible(true);
                                 formDevolucoes.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+//                                formDevolucoes.preencherDados();
+//                                formDevolucoes.exibirRegistro();
+//                                formDevolucoes.preencherTabela();
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
-                            formDevolucoes.setVisible(true);
                         }
                     }
             );
@@ -572,6 +584,62 @@ public class FrameBiblioteca extends JFrame {
             pnlCampos.add(new JLabel("ISBN:"));            // 5, 1
             pnlCampos.add(txtISBN);                             // 5, 2
 
+            // event listeners dos botoes de forms
+
+            btnFormExemplares.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formExemplares.setVisible(true);
+                                formExemplares.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                                formExemplares.preencherDados();
+                                formExemplares.exibirRegistro();
+                                formExemplares.preencherTabela();
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+            );
+
+            btnFormEmprestimos.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formEmprestimos.setVisible(true);
+                                formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+//                                formEmprestimos.preencherDados();
+//                                formEmprestimos.exibirRegistro();
+//                                formEmprestimos.preencherTabela();
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+            );
+
+            btnFormDevolucoes.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formDevolucoes.setVisible(true);
+                                formDevolucoes.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+//                                formDevolucoes.preencherDados();
+//                                formDevolucoes.exibirRegistro();
+//                                formDevolucoes.preencherTabela();
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+            );
+
             // Operações CRUD
             // Inserção
             btnIncluir.addActionListener(
@@ -760,53 +828,6 @@ public class FrameBiblioteca extends JFrame {
                         }
                     }
             );
-
-            // event listeners dos botoes de forms
-
-            btnFormExemplares.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            setVisible(false);
-                            try {
-                                formExemplares.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            formExemplares.setVisible(true);
-                        }
-                    }
-            );
-
-            btnFormEmprestimos.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            setVisible(false);
-                            try {
-                                formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            formEmprestimos.setVisible(true);
-                        }
-                    }
-            );
-
-            btnFormDevolucoes.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            setVisible(false);
-                            try {
-                                formDevolucoes.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
-                            formDevolucoes.setVisible(true);
-                        }
-                    }
-            );
         }
     }
 
@@ -823,10 +844,10 @@ public class FrameBiblioteca extends JFrame {
                 btnFinal, btnCancelar;
 
         // botões para abrir formulários
-        private JButton btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
+        private JButton btnFormLivros, btnFormEmprestimos, btnFormDevolucoes;
 
         // id biblioteca escolhida
-        private static int idBibliotecaEscolhida;
+        private int idBibliotecaEscolhida;
 
         public int getIdBibliotecaEscolhida() {
             return idBibliotecaEscolhida;
@@ -850,7 +871,7 @@ public class FrameBiblioteca extends JFrame {
             }
         }
 
-        private static void preencherDados() {
+        private void preencherDados() {
             String sql = "SELECT * FROM SisBib.Exemplar where idBiblioteca = '" + idBibliotecaEscolhida + "' order by idExemplar";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
@@ -968,11 +989,11 @@ public class FrameBiblioteca extends JFrame {
             // os botões apenas serão enfatizados visualmente quando o mouse passar sobre eles
             tbBotoes.setRollover(true);
 
-            btnFormExemplares = new JButton("Exemplares");
-            btnFormExemplares.setPreferredSize(new Dimension(85,45));
-            btnFormExemplares.setVerticalTextPosition(SwingConstants.BOTTOM);
-            btnFormExemplares.setHorizontalTextPosition(SwingConstants.CENTER);
-            btnFormExemplares.setFocusPainted(false);
+            btnFormLivros = new JButton("livros");
+            btnFormLivros.setPreferredSize(new Dimension(85,45));
+            btnFormLivros.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btnFormLivros.setHorizontalTextPosition(SwingConstants.CENTER);
+            btnFormLivros.setFocusPainted(false);
 
             btnFormEmprestimos = new JButton("Empréstimos");
             btnFormEmprestimos.setPreferredSize(new Dimension(85,45));
@@ -986,7 +1007,7 @@ public class FrameBiblioteca extends JFrame {
             btnFormDevolucoes.setHorizontalTextPosition(SwingConstants.CENTER);
             btnFormDevolucoes.setFocusPainted(false);
 
-            tbBotoes.add(btnFormExemplares);
+            tbBotoes.add(btnFormLivros);
             tbBotoes.add(btnFormEmprestimos);
             tbBotoes.add(btnFormDevolucoes);
 
@@ -1030,6 +1051,61 @@ public class FrameBiblioteca extends JFrame {
             pnlCampos.add(new JLabel("Número exemplar:")); // 4, 1
             pnlCampos.add(txtNumeroExemplar);			        // 4, 2
 
+            // event listeners dos botoes de forms
+
+            btnFormLivros.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formLivros.setVisible(true);
+                                formLivros.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+                                formLivros.preencherDados();
+                                formLivros.exibirRegistro();
+                                formLivros.preencherTabela();
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+            );
+
+            btnFormEmprestimos.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formEmprestimos.setVisible(true);
+                                formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+//                                formEmprestimos.preencherDados();
+//                                formEmprestimos.exibirRegistro();
+//                                formEmprestimos.preencherTabela();
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+            );
+
+            btnFormDevolucoes.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setVisible(false);
+                            try {
+                                formDevolucoes.setVisible(true);
+                                formDevolucoes.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
+//                                formDevolucoes.preencherDados();
+//                                formDevolucoes.exibirRegistro();
+//                                formDevolucoes.preencherTabela();
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+            );
 
             // Operações CRUD
             // Inserção
@@ -1043,8 +1119,8 @@ public class FrameBiblioteca extends JFrame {
                             {
                                 dadosDoSelect.moveToInsertRow();
                                 dadosDoSelect.updateInt("idExemplar", Integer.parseInt(txtIdExemplar.getText()));
-                                dadosDoSelect.updateString("idBiblioteca", txtIdBiblioteca.getText());
-                                dadosDoSelect.updateInt("codLivro", Integer.parseInt(txtCodLivro.getText()));
+                                dadosDoSelect.updateInt("idBiblioteca", Integer.parseInt(txtIdBiblioteca.getText()));
+                                dadosDoSelect.updateString("codLivro", txtCodLivro.getText());
                                 dadosDoSelect.updateInt("numeroExemplar", Integer.parseInt(txtNumeroExemplar.getText()));
                                 dadosDoSelect.insertRow();
                                 JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
@@ -1066,8 +1142,8 @@ public class FrameBiblioteca extends JFrame {
                         {        // lógica da atualização
                             try
                             {
-                                dadosDoSelect.updateString("idBiblioteca", txtIdBiblioteca.getText());
-                                dadosDoSelect.updateInt("codLivro", Integer.parseInt(txtCodLivro.getText()));
+                                dadosDoSelect.updateInt("idBiblioteca", Integer.parseInt(txtIdBiblioteca.getText()));
+                                dadosDoSelect.updateString("codLivro", txtCodLivro.getText());
                                 dadosDoSelect.updateInt("numeroExemplar", Integer.parseInt(txtNumeroExemplar.getText()));
                                 dadosDoSelect.updateRow();
                                 JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
