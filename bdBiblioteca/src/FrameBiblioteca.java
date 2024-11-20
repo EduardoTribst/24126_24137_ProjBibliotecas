@@ -78,9 +78,6 @@ public class FrameBiblioteca extends JFrame {
         // botões para abrir formulários
         private JButton btnFormLivros, btnFormExemplares, btnFormEmprestimos, btnFormDevolucoes;
 
-        // outras vars
-        private boolean escolheuBiblioteca;
-
         // id biblioteca escolhida
         private int idBibliotecaEscolhida;
 
@@ -185,8 +182,6 @@ public class FrameBiblioteca extends JFrame {
             panMensagem.setLayout(new FlowLayout(FlowLayout.LEFT));
             panMensagem.add(labMensagem);
 
-            escolheuBiblioteca = false;
-
             btnConectar.addActionListener(
                     new ActionListener() {
                         @Override
@@ -276,42 +271,6 @@ public class FrameBiblioteca extends JFrame {
                     }
             );
 
-            cbxBiblioteca.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if (!escolheuBiblioteca) {
-                                escolheuBiblioteca = true;
-                            }
-                            else {
-                                String sql = "SELECT idBiblioteca FROM SisBib.biblioteca where nome = '" + cbxBiblioteca.getSelectedItem() + "'";
-                                try {
-                                    Statement comandoSQL = conexaoDados.createStatement();
-                                    try {
-                                        dadosDoSelect = comandoSQL.executeQuery(sql);
-                                        if (dadosDoSelect.next()) {
-                                            idBibliotecaEscolhida = dadosDoSelect.getInt("idBiblioteca");
-                                        } else {
-                                            JOptionPane.showMessageDialog(null, "Registro não encontrado!");
-                                        }
-                                    }
-                                    catch (SQLException ex) {
-                                        ex.printStackTrace();
-                                    }
-                                }
-                                catch (SQLException ex) {
-                                    ex.printStackTrace();
-                                }
-
-                                btnFormLivros.setEnabled(true);
-                                btnFormExemplares.setEnabled(true);
-                                btnFormEmprestimos.setEnabled(true);
-                                btnFormDevolucoes.setEnabled(true);
-                            }
-                        }
-                    }
-            );
-
             Container cntForm = getContentPane();
             cntForm.setLayout(new BorderLayout());
 
@@ -356,6 +315,38 @@ public class FrameBiblioteca extends JFrame {
             catch (SQLException ex) {
                 ex.printStackTrace();
             }
+
+            // adiciona o event listener para a cbx
+            cbxBiblioteca.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String sql = "SELECT idBiblioteca FROM SisBib.biblioteca where nome = '" + cbxBiblioteca.getSelectedItem() + "'";
+                            try {
+                                Statement comandoSQL = conexaoDados.createStatement();
+                                try {
+                                    dadosDoSelect = comandoSQL.executeQuery(sql);
+                                    if (dadosDoSelect.next()) {
+                                        idBibliotecaEscolhida = dadosDoSelect.getInt("idBiblioteca");
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+                                    }
+                                }
+                                catch (SQLException ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                            catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+
+                            btnFormLivros.setEnabled(true);
+                            btnFormExemplares.setEnabled(true);
+                            btnFormEmprestimos.setEnabled(true);
+                            btnFormDevolucoes.setEnabled(true);
+                        }
+                    }
+            );
         }
     }
 
@@ -411,7 +402,6 @@ public class FrameBiblioteca extends JFrame {
                 );
                 try {
                     dadosDoSelect = comandoSQL.executeQuery(sql);
-                    System.out.print(dadosDoSelect);
                     if (dadosDoSelect.next()) {
                         exibirRegistro();
                         //preencherTabela();
