@@ -39,7 +39,7 @@ public class FrameBiblioteca extends JFrame {
                 );
 
                 form.pack();
-                form.setVisible(true);
+                form.setVisible(false);
             }
         });
     }
@@ -56,10 +56,6 @@ public class FrameBiblioteca extends JFrame {
         formExemplares  = new FormExemplares();
         formEmprestimos = new FormEmprestimos();
         formDevolucoes  = new FormDevolucoes();
-
-
-        add(formLogin);
-        add(formLivros);
     }
 
     public class FormLogin extends JFrame {
