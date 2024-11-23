@@ -858,7 +858,7 @@ public class FrameBiblioteca extends JFrame {
         }
 
         private void preencherDados() {
-            String sql = "SELECT * FROM SisBib.Exemplar where idBiblioteca = '" + idBibliotecaEscolhida + "' order by idExemplar";
+            String sql = "SELECT * FROM SisBib.Exemplar where idBiblioteca = " + idBibliotecaEscolhida + " order by idExemplar";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
                         ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
@@ -1284,9 +1284,9 @@ public class FrameBiblioteca extends JFrame {
 
     public class FormEmprestimos extends JFrame {
         // botoes e coisas do tipo
-        private static ResultSet dadosDoSelect;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
+        private static ResultSet dadosDoSelectEmprestimos, dadosDoSelectAtrasados;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
 
-        private static JTextField txtCodLivro, txtTitulo, txtIdAutor, txtIdArea, txtISBN;
+        private static JTextField txtIdEmprestimo, txtIdLeitor, txtIdExemplar, txtDataEmprestimo, txtDevolucaoEfetiva, txtDevolucaoPrevista;
 
         private static JTable tabEmprestimos, tabAtrasados;	// controle que exibe dados em formato tabular (linhas e colunas)
 
@@ -1319,8 +1319,73 @@ public class FrameBiblioteca extends JFrame {
             }
         }
 
-        private void exibirRegistro() {
+        private void preencherDadosEmprestimo() {
+            String sql = "SELECT * FROM SisBib.Emprestimo where idExemplar in (select idExemplar from sisbib.Exemplar where idBiblioteca = " + idBibliotecaEscolhida + ") order by idEmprestimo";
+            try {
+                Statement comandoSQL = conexaoDados.createStatement(
+                        ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
+                        ResultSet.CONCUR_UPDATABLE        // ResultSet é atualizável
+                );
+                try {
+                    dadosDoSelectEmprestimos = comandoSQL.executeQuery(sql);
+                    System.out.print(dadosDoSelectEmprestimos);
+                    if (dadosDoSelectEmprestimos.next()) {
+                        preencherTabelaEmprestimo();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+                    }
+                }
+                catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        private void preencherDadosAtrasados() {
+            String sql = "SELECT * FROM SisBib.AtrasoEMultas where codigo exists(select idExemplar from sisbib.Exemplar where idBiblioteca = " + idBibliotecaEscolhida + ") order by codigo";
+            try {
+                Statement comandoSQL = conexaoDados.createStatement(
+                        ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
+                        ResultSet.CONCUR_UPDATABLE        // ResultSet é atualizável
+                );
+                try {
+                    dadosDoSelectAtrasados = comandoSQL.executeQuery(sql);
+                    System.out.print(dadosDoSelectAtrasados);
+                    if (dadosDoSelectAtrasados.next()) {
+                        preencherTabelaAtrasados();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+                    }
+                }
+                catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        private void preencherTabelaEmprestimo() {
             // dps faz
+        }
+
+        private void preencherTabelaAtrasados() {
+            // dps faz
+        }
+
+        private static void exibirRegistroEmprestimos() throws SQLException {
+            if (!dadosDoSelectEmprestimos.rowDeleted()) {
+                txtIdEmprestimo.setText(String.valueOf(dadosDoSelectEmprestimos.getInt("idEmprestimo")));
+                txtIdLeitor.setText(String.valueOf(dadosDoSelectEmprestimos.getInt("idLeitor")));
+                txtIdExemplar.setText(String.valueOf(dadosDoSelectEmprestimos.getInt("idExemplar")));
+                txtDataEmprestimo.setText(String.valueOf(dadosDoSelectEmprestimos.getDate("dataEmprestimo")));
+                txtDevolucaoEfetiva.setText(String.valueOf(dadosDoSelectEmprestimos.getDate("devolucaoEfetiva")));
+                txtDevolucaoPrevista.setText(String.valueOf(dadosDoSelectEmprestimos.getDate("devolucaoPrevista")));
+            }
         }
 
         public FormEmprestimos() {
@@ -1454,37 +1519,41 @@ public class FrameBiblioteca extends JFrame {
 
             setVisible(false); // deixa invisivel ate o usuario selecionar esse form
 
+            // tab emprestimos
             Object [][] dadosEmprestimo = {};
-            String[] titulosColunas = {"codigo Livro","titulo","id Autor","id Area"};
+            String[] titulosColunas = {"Id Empréstimo","Id Leitor","Id Exemplar","Data do Empréstimo", "Data da Devolução Efetiva", "Data Devolução Prevista"};
             tabEmprestimos = new JTable(dadosEmprestimo,  titulosColunas);
             JScrollPane barraRolagem = new JScrollPane(tabEmprestimos);
             pnlGrade.add(barraRolagem);
 
-            pnlCampos.setLayout(new GridLayout(5, 2));	//  5 linhas e 2 colunas
-            txtCodLivro = new JTextField();
-            txtTitulo   = new JTextField();
-            txtIdAutor  = new JTextField();
-            txtIdArea   = new JTextField();
-            txtISBN     = new JTextField();
-
-            pnlCampos.add(new JLabel("Id Livro"));         // 1, 1
-            pnlCampos.add(txtCodLivro);                         // 1, 2
-            pnlCampos.add(new JLabel("Título do Livro:")); // 2, 1
-            pnlCampos.add(txtTitulo);					        // 2, 2
-            pnlCampos.add(new JLabel("Id Autor:"));		// 3, 1
-            pnlCampos.add(txtIdAutor);					        // 3, 2
-            pnlCampos.add(new JLabel("Id Área:"));		    // 4, 1
-            pnlCampos.add(txtIdArea);					        // 4, 2
-            pnlCampos.add(new JLabel("ISBN:"));            // 5, 1
-            pnlCampos.add(txtISBN);                             // 5, 2
-
             // tab de atrasados
-
             Object [][] dadosAtrasado = {};
-            String[] titulosColunasAtrasados = {"codigo Livro","titulo"};
+            String[] titulosColunasAtrasados = {"codigo","multa"};
             tabAtrasados = new JTable(dadosAtrasado,  titulosColunasAtrasados);
             JScrollPane barraRolagemAtrasados = new JScrollPane(tabAtrasados);
             pnlGrade.add(barraRolagemAtrasados);
+
+            pnlCampos.setLayout(new GridLayout(6, 2));	//  5 linhas e 2 colunas
+            txtIdEmprestimo      = new JTextField();
+            txtIdLeitor          = new JTextField();
+            txtIdExemplar        = new JTextField();
+            txtDataEmprestimo    = new JTextField();
+            txtDevolucaoEfetiva  = new JTextField();
+            txtDevolucaoPrevista = new JTextField();
+
+            pnlCampos.add(new JLabel("Id Empréstimo"));              // 1, 1
+            pnlCampos.add(txtIdEmprestimo);                               // 1, 2
+            pnlCampos.add(new JLabel("Id Leitor:"));                 // 2, 1
+            pnlCampos.add(txtIdLeitor);					                  // 2, 2
+            pnlCampos.add(new JLabel("Id Exemplar:"));		          // 3, 1
+            pnlCampos.add(txtIdExemplar);					              // 3, 2
+            pnlCampos.add(new JLabel("Data do Empréstimo:"));		  // 4, 1
+            pnlCampos.add(txtDataEmprestimo);					          // 4, 2
+            pnlCampos.add(new JLabel("Data da Devolução Efetiva:")); // 5, 1
+            pnlCampos.add(txtDevolucaoEfetiva);                           // 5, 2
+            pnlCampos.add(new JLabel("Data da Devolução Prevista:"));// 6, 1
+            pnlCampos.add(txtDevolucaoPrevista);                          // 6, 2
+
 
             // event listeners dos botoes de forms
 
@@ -1552,13 +1621,13 @@ public class FrameBiblioteca extends JFrame {
                         {    // Lógica da inclusão
                             try
                             {
-                                dadosDoSelect.moveToInsertRow();
-                                dadosDoSelect.updateString("codLivro", txtCodLivro.getText());
-                                dadosDoSelect.updateString("titulo", txtTitulo.getText());
-                                dadosDoSelect.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
-                                dadosDoSelect.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
-                                dadosDoSelect.updateString("ISBN", txtISBN.getText());
-                                dadosDoSelect.insertRow();
+                                dadosDoSelectEmprestimos.moveToInsertRow();
+                                dadosDoSelectEmprestimos.updateString("codLivro", txtCodLivro.getText());
+                                dadosDoSelectEmprestimos.updateString("titulo", txtTitulo.getText());
+                                dadosDoSelectEmprestimos.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
+                                dadosDoSelectEmprestimos.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
+                                dadosDoSelectEmprestimos.updateString("ISBN", txtISBN.getText());
+                                dadosDoSelectEmprestimos.insertRow();
                                 JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
                             }
                             catch (SQLException ex)
@@ -1578,11 +1647,11 @@ public class FrameBiblioteca extends JFrame {
                         {        // lógica da atualização
                             try
                             {
-                                dadosDoSelect.updateString("titulo", txtTitulo.getText());
-                                dadosDoSelect.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
-                                dadosDoSelect.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
-                                dadosDoSelect.updateString("ISBN", txtISBN.getText());
-                                dadosDoSelect.updateRow();
+                                dadosDoSelectEmprestimos.updateString("titulo", txtTitulo.getText());
+                                dadosDoSelectEmprestimos.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
+                                dadosDoSelectEmprestimos.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
+                                dadosDoSelectEmprestimos.updateString("ISBN", txtISBN.getText());
+                                dadosDoSelectEmprestimos.updateRow();
                                 JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
                             }
                             catch (SQLException ex)
@@ -1605,7 +1674,7 @@ public class FrameBiblioteca extends JFrame {
                                         null, "Deseja realmente excluir?") ==
                                         JOptionPane.OK_OPTION)
                                 {
-                                    dadosDoSelect.deleteRow();
+                                    dadosDoSelectEmprestimos.deleteRow();
                                     JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
 //                                    exibirRegistro();   // exibe o próximo registro
                                 }
@@ -1627,22 +1696,22 @@ public class FrameBiblioteca extends JFrame {
                         {
                             try
                             {
-                                int posicaoAnterior = dadosDoSelect.getRow();  // registro atual
+                                int posicaoAnterior = dadosDoSelectEmprestimos.getRow();  // registro atual
                                 String chaveProcurada = txtCodLivro.getText();
-                                dadosDoSelect.beforeFirst();      // posiciona antes do 1o registro
+                                dadosDoSelectEmprestimos.beforeFirst();      // posiciona antes do 1o registro
                                 boolean achou = false;
-                                while (! achou && dadosDoSelect.next())
+                                while (! achou && dadosDoSelectEmprestimos.next())
                                 {
-                                    if (dadosDoSelect.getString("codLivro").compareTo(chaveProcurada) == 0)
+                                    if (dadosDoSelectEmprestimos.getString("codLivro").compareTo(chaveProcurada) == 0)
                                         achou = true;
                                 }
                                 if (!achou)
                                 {
                                     JOptionPane.showMessageDialog(null, "Registro não encontrado!");
-                                    dadosDoSelect.absolute(posicaoAnterior);  // retorna ao registro
+                                    dadosDoSelectEmprestimos.absolute(posicaoAnterior);  // retorna ao registro
                                     // anteriormente visível
                                 }
-                                exibirRegistro();   // exibe o registro encontrado ou o original
+                                preencherTabelaEmprestimo();   // exibe o registro encontrado ou o original
                             }
                             catch (SQLException exception)
                             {
@@ -1660,8 +1729,8 @@ public class FrameBiblioteca extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                if (dadosDoSelect.first()) {
-                                    exibirRegistro();
+                                if (dadosDoSelectEmprestimos.first()) {
+                                    exibirRegistroEmprestimos();
                                 }
                                 else {
                                     JOptionPane.showMessageDialog(null, "Não achou Primeiro registro!");
@@ -1679,8 +1748,8 @@ public class FrameBiblioteca extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                if (dadosDoSelect.previous()) {
-                                    exibirRegistro();
+                                if (dadosDoSelectEmprestimos.previous()) {
+                                    exibirRegistroEmprestimos();
                                 }
                                 else {
                                     JOptionPane.showMessageDialog(null, "Não achou Registro anterior!");
@@ -1698,8 +1767,8 @@ public class FrameBiblioteca extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                if (dadosDoSelect.next()) {
-                                    exibirRegistro();
+                                if (dadosDoSelectEmprestimos.next()) {
+                                    exibirRegistroEmprestimos();
                                 }
                                 else {
                                     JOptionPane.showMessageDialog(null, "Não achou próximo registro!");
@@ -1717,8 +1786,8 @@ public class FrameBiblioteca extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             try {
-                                if (dadosDoSelect.last()) {
-                                    exibirRegistro();
+                                if (dadosDoSelectEmprestimos.last()) {
+                                    exibirRegistroEmprestimos();
                                 }
                                 else {
                                     JOptionPane.showMessageDialog(null, "Não achou Último registro!");
