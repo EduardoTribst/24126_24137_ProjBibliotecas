@@ -421,7 +421,7 @@ public class FrameBiblioteca extends JFrame {
         }
 
         public static void preencherTabela() throws SQLException {
-            colunas = new String[]{"codigo Livro","titulo","id Autor","id Area", "IBSN"};
+            colunas = new String[]{"codigo Livro","titulo","id Autor","id Area"/*, "IBSN"*/};
             dadosDoSelect.last();
             int totalLinhas = dadosDoSelect.getRow();
             dadosDoSelect.beforeFirst();
@@ -429,17 +429,28 @@ public class FrameBiblioteca extends JFrame {
 
             linhas = new String[totalLinhas][5];
 
+//            linhas[0][0] = "codLivro";
+//            linhas[0][1] = "Titulo";
+//            linhas[0][2] = "Autor";
+//            linhas[0][3] = "Area";
+//            linhas[0][4] = "ISBN";
+
 
             for (int i = 0; i<totalLinhas; i++){
+                dadosDoSelect.next();
                 linhas[i][0] = dadosDoSelect.getString(1);
                 linhas[i][1] = dadosDoSelect.getString(2);
                 linhas[i][2] = dadosDoSelect.getString(3);
                 linhas[i][3] = dadosDoSelect.getString(4);
-                linhas[i][4] = dadosDoSelect.getString(5);
+                //linhas[i][4] = dadosDoSelect.getString(5);
 
             }
 
             modelo = new DefaultTableModel(linhas, colunas);
+
+            System.out.println("Rows: " + modelo.getRowCount());
+            System.out.println("Columns: " + modelo.getColumnCount());
+
 
 
         }
@@ -572,6 +583,7 @@ public class FrameBiblioteca extends JFrame {
             Object [][] dadosLivro = {};
             String[] titulosColunas = {"codigo Livro","titulo","id Autor","id Area"};
             tabLivro = new JTable(modelo);
+            tabLivro.setVisible(true);
             JScrollPane barraRolagem = new JScrollPane(tabLivro);
             pnlGrade.add(barraRolagem);
 
