@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -353,6 +354,11 @@ public class FrameBiblioteca extends JFrame {
 
         private static JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
 
+        private static DefaultTableModel modelo;
+        private static String[] colunas;
+        private static String[][] linhas;
+        private static int quantasLinhas = 0;
+
         // acoes crud
         private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
         private JButton btnIncluir, btnSalvar, btnExcluir, btnBuscar, btnProximo, btnAnterior, btnInicio,
@@ -400,7 +406,7 @@ public class FrameBiblioteca extends JFrame {
                     dadosDoSelect = comandoSQL.executeQuery(sql);
                     if (dadosDoSelect.next()) {
                         exibirRegistro();
-                        //preencherTabela();
+                        preencherTabela();
                     } else {
                         JOptionPane.showMessageDialog(null, "Registro não encontrado!");
                     }
@@ -415,10 +421,27 @@ public class FrameBiblioteca extends JFrame {
         }
 
         public static void preencherTabela() throws SQLException {
-            do{
-                // preencher tabela
+            colunas = new String[]{"codigo Livro","titulo","id Autor","id Area", "IBSN"};
+            dadosDoSelect.last();
+            int totalLinhas = dadosDoSelect.getRow();
+            dadosDoSelect.beforeFirst();
+            System.out.println(totalLinhas);
+
+            linhas = new String[totalLinhas][5];
+
+
+            for (int i = 0; i<totalLinhas; i++){
+                linhas[i][0] = dadosDoSelect.getString(1);
+                linhas[i][1] = dadosDoSelect.getString(2);
+                linhas[i][2] = dadosDoSelect.getString(3);
+                linhas[i][3] = dadosDoSelect.getString(4);
+                linhas[i][4] = dadosDoSelect.getString(5);
+
             }
-            while (dadosDoSelect.next());
+
+            modelo = new DefaultTableModel(linhas, colunas);
+
+
         }
 
 
@@ -548,7 +571,7 @@ public class FrameBiblioteca extends JFrame {
 
             Object [][] dadosLivro = {};
             String[] titulosColunas = {"codigo Livro","titulo","id Autor","id Area"};
-            tabLivro = new JTable(dadosLivro,  titulosColunas);
+            tabLivro = new JTable(modelo);
             JScrollPane barraRolagem = new JScrollPane(tabLivro);
             pnlGrade.add(barraRolagem);
 
@@ -1455,7 +1478,7 @@ public class FrameBiblioteca extends JFrame {
             setVisible(false); // deixa invisivel ate o usuario selecionar esse form
 
             Object [][] dadosEmprestimo = {};
-            String[] titulosColunas = {"codigo Livro","titulo","id Autor","id Area"};
+            String[] titulosColunas = {"codigo Livro","titulo","id Autor","id Area","ISBN"};
             tabEmprestimos = new JTable(dadosEmprestimo,  titulosColunas);
             JScrollPane barraRolagem = new JScrollPane(tabEmprestimos);
             pnlGrade.add(barraRolagem);
