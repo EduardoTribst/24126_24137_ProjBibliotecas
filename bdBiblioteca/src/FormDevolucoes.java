@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.time.LocalDate;
-import javax.swing.table.DefaultTableModel;
+import java.util.concurrent.TimeUnit;
 
 public class FormDevolucoes extends JFrame {
     private ResultSet dadosDoSelect;
@@ -168,7 +168,7 @@ public class FormDevolucoes extends JFrame {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        String sql = "select em.idEmprestimo from sisbib.Emprestimo em\n" +
+                        String sql = "select em.idEmprestimo, em.devolucaoPrevista, em.idLeitor from sisbib.Emprestimo em\n" +
                                 "inner join sisbib.Exemplar ex on em.idExemplar = ex.idExemplar\n" +
                                 "where \n" +
                                 "em.devolucaoEfetiva is null and\n" +
@@ -187,14 +187,45 @@ public class FormDevolucoes extends JFrame {
                                 dadosDoSelect = prepStatement.executeQuery();
                                 if (dadosDoSelect.next()) {
                                     // existe um emprestimo com esses dados
-                                    sql = "update sisbib.emprestimo set devolucaoEfetiva = ? where idEmprestimo = ?";
-                                    prepStatement = conexaoDados.prepareStatement(sql);
-                                    prepStatement.setDate(1, Date.valueOf(LocalDate.now()));
-                                    prepStatement.setInt(2, dadosDoSelect.getInt("idEmprestimo"));
+                                    Date dataDevolucaoEfetiva = Date.valueOf(LocalDate.now());
 
-                                    int linhasAfetadas = prepStatement.executeUpdate();
+                                    sql = "update sisbib.emprestimo set devolucaoEfetiva = ? where idEmprestimo = ?";
+                                    PreparedStatement pSt = conexaoDados.prepareStatement(sql);
+                                    pSt.setDate(1, dataDevolucaoEfetiva);
+                                    pSt.setInt(2, dadosDoSelect.getInt("idEmprestimo"));
+
+                                    int linhasAfetadas = pSt.executeUpdate();
                                     if (linhasAfetadas > 0) {
                                         lbMensagem.setText("Mensagem: Devolução concluída");
+
+                                        // verifica se esta atrasado
+                                        Date dataDevolucaoPrevista = dadosDoSelect.getDate("devolucaoPrevista");
+
+                                        long tempoDevolucaoEfetiva  = dataDevolucaoEfetiva .getTime();
+                                        long tempoDevolucaoPrevista = dataDevolucaoPrevista.getTime();
+
+                                        long diferencaEntreDatas = tempoDevolucaoPrevista - tempoDevolucaoEfetiva;
+
+                                        if (diferencaEntreDatas < 0) {
+                                            // esta fora do prazo
+                                            sql = "{call suspendeLeitor_sp(?)}";
+
+                                            try {
+                                                CallableStatement calStatement = conexaoDados.prepareCall(sql);
+                                                calStatement.setInt(1, dadosDoSelect.getInt("idLeitor"));
+
+                                                boolean result = calStatement.execute();
+
+                                                if (result) {
+                                                    JOptionPane.showMessageDialog(null, "Leitor suspenso.");
+                                                }
+                                                else {
+                                                    JOptionPane.showMessageDialog(null, "Ocorreu um erro ao suspenser leitor.");
+                                                }
+                                            } catch (SQLException ex) {
+                                                throw new RuntimeException(ex);
+                                            }
+                                        }
                                     }
                                     else {
                                         JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar os empréstimos.");
