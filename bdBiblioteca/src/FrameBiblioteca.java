@@ -383,7 +383,7 @@ public class FrameBiblioteca extends JFrame {
             }
         }
 
-        static private void exibirRegistro() throws SQLException
+        private void exibirRegistro() throws SQLException
         {
             if (!dadosDoSelect.rowDeleted())
             {
@@ -395,7 +395,7 @@ public class FrameBiblioteca extends JFrame {
             }
         }
 
-        private static void preencherDados() {
+        private void preencherDados() {
             String sql = "SELECT * FROM SisBib.Livro order by codLivro";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
@@ -420,7 +420,7 @@ public class FrameBiblioteca extends JFrame {
             }
         }
 
-        public static void preencherTabela() throws SQLException {
+        public void preencherTabela() throws SQLException {
             colunas = new String[]{"codigo Livro","titulo","id Autor","id Area"/*, "IBSN"*/};
             dadosDoSelect.last();
             int totalLinhas = dadosDoSelect.getRow();
@@ -881,7 +881,7 @@ public class FrameBiblioteca extends JFrame {
             }
         }
 
-        private static void exibirRegistro() throws SQLException {
+        private void exibirRegistro() throws SQLException {
             if (!dadosDoSelect.rowDeleted()) {
                 txtIdExemplar.setText(String.valueOf(dadosDoSelect.getInt("idExemplar")));
                 txtIdBiblioteca.setText(String.valueOf(dadosDoSelect.getInt("idBiblioteca")));
@@ -916,7 +916,7 @@ public class FrameBiblioteca extends JFrame {
             }
         }
 
-        public static void preencherTabela() throws SQLException {
+        public void preencherTabela() throws SQLException {
             do{
                 // preencher tabela
             }
@@ -1412,7 +1412,7 @@ public class FrameBiblioteca extends JFrame {
             // dps faz
         }
 
-        private static void exibirRegistroEmprestimos() throws SQLException {
+        private void exibirRegistroEmprestimos() throws SQLException {
             if (!dadosDoSelectEmprestimos.rowDeleted()) {
                 txtIdEmprestimo.setText(String.valueOf(dadosDoSelectEmprestimos.getInt("idEmprestimo")));
                 txtIdLeitor.setText(String.valueOf(dadosDoSelectEmprestimos.getInt("idLeitor")));
