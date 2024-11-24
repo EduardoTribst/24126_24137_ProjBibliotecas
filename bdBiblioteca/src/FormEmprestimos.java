@@ -369,7 +369,7 @@ public class FormEmprestimos extends JFrame {
                                 dadosDoSelectEmprestimos.updateString("idLeitor", txtIdLeitor.getText());
                                 dadosDoSelectEmprestimos.updateString("idExemplar", txtIdExemplar.getText());
                                 dadosDoSelectEmprestimos.updateDate("dataEmprestimo", Date.valueOf(txtDataEmprestimo.getText()));
-                                dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", Date.valueOf(txtDevolucaoEfetiva.getText()));
+                                dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", null);
                                 dadosDoSelectEmprestimos.updateDate("devolucaoPrevista", Date.valueOf(txtDevolucaoPrevista.getText()));
                                 dadosDoSelectEmprestimos.insertRow();
                                 JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");

@@ -96,8 +96,5 @@ public class FrameBiblioteca extends JFrame {
 
     public void exibirFormDevolucoes() throws SQLException {
         formDevolucoes.setVisible(true);
-        formDevolucoes.preencherDados();
-        formDevolucoes.irParaPrimeiroRegistro();
-        formDevolucoes.preencherTabela();
     }
 }
