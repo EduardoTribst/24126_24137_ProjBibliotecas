@@ -68,7 +68,7 @@ public class FrameBiblioteca extends JFrame {
         private JComboBox<String> cbxBiblioteca;
 
         // dados
-        private static ResultSet dadosDoSelect;
+        private ResultSet dadosDoSelect;
 
         // toolbar que contém os botões de navegação entre os formulários
         private JToolBar tbBotoesNavegacao;
@@ -348,16 +348,16 @@ public class FrameBiblioteca extends JFrame {
     }
 
     public class FormLivros extends JFrame {
-        private static ResultSet dadosDoSelect;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
+        private ResultSet dadosDoSelect;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
 
-        private static JTextField txtCodLivro, txtTitulo, txtIdAutor, txtIdArea, txtISBN;
+        private JTextField txtCodLivro, txtTitulo, txtIdAutor, txtIdArea, txtISBN;
 
-        private static JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
+        private JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
 
-        private static DefaultTableModel modelo;
-        private static String[] colunas;
-        private static String[][] linhas;
-        private static int quantasLinhas = 0;
+        private DefaultTableModel modelo;
+        private String[] colunas;
+        private String[][] linhas;
+        private int quantasLinhas = 0;
 
         // acoes crud
         private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
@@ -851,11 +851,11 @@ public class FrameBiblioteca extends JFrame {
     }
 
     public class FormExemplares extends JFrame {
-        private static ResultSet dadosDoSelect;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
+        private ResultSet dadosDoSelect;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
 
-        private static JTextField txtIdExemplar, txtIdBiblioteca, txtCodLivro, txtNumeroExemplar;
+        private  JTextField txtIdExemplar, txtIdBiblioteca, txtCodLivro, txtNumeroExemplar;
 
-        private static JTable tabExemplar;	// controle que exibe dados em formato tabular (linhas e colunas)
+        private JTable tabExemplar;	// controle que exibe dados em formato tabular (linhas e colunas)
 
         // acoes crud
         private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
@@ -1319,11 +1319,11 @@ public class FrameBiblioteca extends JFrame {
 
     public class FormEmprestimos extends JFrame {
         // botoes e coisas do tipo
-        private static ResultSet dadosDoSelectEmprestimos, dadosDoSelectAtrasados;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
+        private ResultSet dadosDoSelectEmprestimos, dadosDoSelectAtrasados;   // tabela resultante de um select no BD, PARA NAVEGAÇÃO
 
-        private static JTextField txtIdEmprestimo, txtIdLeitor, txtIdExemplar, txtDataEmprestimo, txtDevolucaoEfetiva, txtDevolucaoPrevista;
+        private JTextField txtIdEmprestimo, txtIdLeitor, txtIdExemplar, txtDataEmprestimo, txtDevolucaoEfetiva, txtDevolucaoPrevista;
 
-        private static JTable tabEmprestimos, tabAtrasados;	// controle que exibe dados em formato tabular (linhas e colunas)
+        private JTable tabEmprestimos, tabAtrasados;	// controle que exibe dados em formato tabular (linhas e colunas)
 
         // tab que alterna entre emprestimos e livros em atraso
 
