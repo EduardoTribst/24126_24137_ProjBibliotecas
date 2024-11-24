@@ -1,7 +1,12 @@
 import javax.swing.*;
-import java.sql.Connection;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
 
 public class FormDevolucoes extends JFrame {
+    private ResultSet dadosDoSelect;
     // botoes e coisas do tipo sei la mo preguica slk
 
     // id biblioteca escolhida
@@ -26,6 +31,32 @@ public class FormDevolucoes extends JFrame {
 
     public void setConexaoDados(Connection conexao) {
         conexaoDados = conexao;
+    }
+
+    public void preencherDados() {
+
+    }
+
+    public void preencherTabela() {
+
+    }
+
+    public void exibirRegistro() {
+
+    }
+
+    public void irParaPrimeiroRegistro() {
+        try {
+            if (dadosDoSelect.first()) {
+                exibirRegistro();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Não achou Primeiro registro!");
+            }
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public FormDevolucoes(FrameBiblioteca controlador) {

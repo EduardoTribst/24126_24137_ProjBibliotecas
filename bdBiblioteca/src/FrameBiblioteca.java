@@ -74,30 +74,30 @@ public class FrameBiblioteca extends JFrame {
     public void exibirFormLivros() throws SQLException {
         formLivros.setVisible(true);
         formLivros.preencherDados();
-        formLivros.exibirRegistro();
+        formLivros.irParaPrimeiroRegistro(); // ja chama o exibirRegistro()
         formLivros.preencherTabela();
     }
 
     public void exibirFormExemplares() throws SQLException {
         formExemplares.setVisible(true);
         formExemplares.preencherDados();
-        formExemplares.exibirRegistro();
+        formExemplares.irParaPrimeiroRegistro(); // ja chama o exibirRegistro()
         formExemplares.preencherTabela();
     }
 
     public void exibirFormEmprestimos() throws  SQLException {
         formEmprestimos.setVisible(true);
         formEmprestimos.preencherDadosEmprestimo();
-        formEmprestimos.preencherDadosAtrasados();
-        formEmprestimos.exibirRegistroEmprestimos();
+        formEmprestimos.irParaPrimeiroRegistro();
         formEmprestimos.preencherTabelaEmprestimo();
+        formEmprestimos.preencherDadosAtrasados();
         formEmprestimos.preencherTabelaAtrasados();
     }
 
     public void exibirFormDevolucoes() throws SQLException {
         formDevolucoes.setVisible(true);
-//        formDevolucoes.preencherDados();
-//        formDevolucoes.exibirRegistro();
-//        formDevolucoes.preencherTabela();
+        formDevolucoes.preencherDados();
+        formDevolucoes.irParaPrimeiroRegistro();
+        formDevolucoes.preencherTabela();
     }
 }

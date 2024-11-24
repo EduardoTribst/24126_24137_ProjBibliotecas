@@ -117,6 +117,20 @@ public class FormLivros extends JFrame {
         System.out.println("Columns: " + modelo.getColumnCount());
     }
 
+    public void irParaPrimeiroRegistro() {
+        try {
+            if (dadosDoSelect.first()) {
+                exibirRegistro();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Não achou Primeiro registro!");
+            }
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     public FormLivros(FrameBiblioteca controlador) {
         setTitle("Sistema de Biblioteca | Livros");
@@ -431,17 +445,7 @@ public class FormLivros extends JFrame {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        try {
-                            if (dadosDoSelect.first()) {
-                                exibirRegistro();
-                            }
-                            else {
-                                JOptionPane.showMessageDialog(null, "Não achou Primeiro registro!");
-                            }
-                        }
-                        catch (SQLException ex) {
-                            ex.printStackTrace();
-                        }
+                        irParaPrimeiroRegistro();
                     }
                 }
         );

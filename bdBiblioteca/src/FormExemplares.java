@@ -86,6 +86,20 @@ public class FormExemplares extends JFrame {
         while (dadosDoSelect.next());
     }
 
+    public void irParaPrimeiroRegistro() {
+        try {
+            if (dadosDoSelect.first()) {
+                exibirRegistro();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Não achou Primeiro registro!");
+            }
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     public FormExemplares(FrameBiblioteca controlador) {
         setTitle("Sistema de Biblioteca | Exemplares");
@@ -395,17 +409,7 @@ public class FormExemplares extends JFrame {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        try {
-                            if (dadosDoSelect.first()) {
-                                exibirRegistro();
-                            }
-                            else {
-                                JOptionPane.showMessageDialog(null, "Não achou Primeiro registro!");
-                            }
-                        }
-                        catch (SQLException ex) {
-                            ex.printStackTrace();
-                        }
+                        irParaPrimeiroRegistro();
                     }
                 }
         );
