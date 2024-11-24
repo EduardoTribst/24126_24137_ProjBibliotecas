@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.time.LocalDate;
 import javax.swing.table.DefaultTableModel;
 
 public class FormDevolucoes extends JFrame {
@@ -167,7 +168,47 @@ public class FormDevolucoes extends JFrame {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        
+                        String sql = "select em.idEmprestimo from sisbib.Emprestimo em\n" +
+                                "inner join sisbib.Exemplar ex on em.idExemplar = ex.idExemplar\n" +
+                                "where \n" +
+                                "em.devolucaoEfetiva is null and\n" +
+                                "ex.numeroExemplar = ? and\n" +
+                                "ex.codLivro = ? and\n" +
+                                "em.idLeitor = ? and\n" +
+                                "ex.idBiblioteca = ?";
+
+                        try {
+                            PreparedStatement prepStatement = conexaoDados.prepareStatement(sql);
+                            prepStatement.setInt(1, Integer.parseInt(txtNumeroExemplar.getText()));
+                            prepStatement.setString(2, txtCodLivro.getText());
+                            prepStatement.setInt(3, Integer.parseInt(txtIdLeitor.getText()));
+                            prepStatement.setInt(4, idBibliotecaEscolhida);
+                            try {
+                                dadosDoSelect = prepStatement.executeQuery();
+                                if (dadosDoSelect.next()) {
+                                    // existe um emprestimo com esses dados
+                                    sql = "update sisbib.emprestimo set devolucaoEfetiva = ? where idEmprestimo = ?";
+                                    prepStatement = conexaoDados.prepareStatement(sql);
+                                    prepStatement.setDate(1, Date.valueOf(LocalDate.now()));
+                                    prepStatement.setInt(2, dadosDoSelect.getInt("idEmprestimo"));
+
+                                    int linhasAfetadas = prepStatement.executeUpdate();
+                                    if (linhasAfetadas > 0) {
+                                        lbMensagem.setText("Mensagem: Devolução concluída");
+                                    }
+                                    else {
+                                        JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar os empréstimos.");
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Não existe um empréstimo aberto com esses dados ou nessa bibiloteca.");
+                                }
+                            }
+                            catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 }
         );
