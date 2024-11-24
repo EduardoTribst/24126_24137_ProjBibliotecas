@@ -18,7 +18,7 @@ public class FormEmprestimos extends JFrame {
     private JTabbedPane tabbedPane;
 
     // acoes crud
-    private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
+    private JToolBar tbBotoes, tbBotoesNavegacao; // armazenará os botões abaixo; será colocado no topo do formulári
     private JButton btnIncluir, btnSalvar, btnExcluir, btnBuscar, btnProximo, btnAnterior, btnInicio,
             btnFinal, btnCancelar;
 
@@ -120,13 +120,14 @@ public class FormEmprestimos extends JFrame {
 
     public FormEmprestimos(FrameBiblioteca controlador) {
         setTitle("Sistema de Biblioteca | Empréstimos");
-        setSize(1000, 300);
+        setSize(1000, 600);
 
         // inicializa o frame principal
         framePrincipal = controlador;
 
         // Adiciorenamos os botões ao JToolBar que os conterá
-        tbBotoes = new JToolBar();  // orientação padrão é HORIZONTAL
+        tbBotoes          = new JToolBar();  // orientação padrão é HORIZONTAL
+        tbBotoesNavegacao = new JToolBar();
 
         btnInicio = new JButton("Inicio", new ImageIcon(getClass().getResource("/resources/first.png")));
         btnInicio.setPreferredSize(new Dimension(65,45));
@@ -185,7 +186,8 @@ public class FormEmprestimos extends JFrame {
         // Os botões serão dispostos um ao lado do outro, fluindo da esquerda para a direita, de cima para baixo
         // para isso usamos um gerenciador de layout da classe FlowLayout:
         // estabelecemos o layout do tbBotoes como flowLayout
-        tbBotoes.setLayout(new FlowLayout());
+        tbBotoes         .setLayout(new FlowLayout());
+        tbBotoesNavegacao.setLayout((new FlowLayout()));
 
         tbBotoes.add(btnInicio);
         tbBotoes.add(btnAnterior);
@@ -203,7 +205,8 @@ public class FormEmprestimos extends JFrame {
         tbBotoes.addSeparator();    // coloca um separador entre esses botões e os seguintes
 
         // os botões apenas serão enfatizados visualmente quando o mouse passar sobre eles
-        tbBotoes.setRollover(true);
+        tbBotoes         .setRollover(true);
+        tbBotoesNavegacao.setRollover(true);
 
         btnFormLivros = new JButton("Livros");
         btnFormLivros.setPreferredSize(new Dimension(85,45));
@@ -223,9 +226,9 @@ public class FormEmprestimos extends JFrame {
         btnFormDevolucoes.setHorizontalTextPosition(SwingConstants.CENTER);
         btnFormDevolucoes.setFocusPainted(false);
 
-        tbBotoes.add(btnFormLivros);
-        tbBotoes.add(btnFormExemplares);
-        tbBotoes.add(btnFormDevolucoes);
+        tbBotoesNavegacao.add(btnFormLivros);
+        tbBotoesNavegacao.add(btnFormExemplares);
+        tbBotoesNavegacao.add(btnFormDevolucoes);
 
 
         JPanel pnlGrade = new JPanel();    	 	// colocaremos JTable com os registros da tabela
@@ -249,11 +252,12 @@ public class FormEmprestimos extends JFrame {
 
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Listar empréstimos", pnlEmprestimos);
-        tabbedPane.addTab("Listar atrasados", pnlAtrasados);
-        pnlAtrasados.add(tbBotoes, BorderLayout.NORTH);
+        tabbedPane.addTab("Listar atrasados"  , pnlAtrasados);
 
         Container cntPrincipal = getContentPane();
-        cntPrincipal.add(tabbedPane);
+        cntPrincipal.setLayout(new BorderLayout());
+        cntPrincipal.add(tbBotoesNavegacao, BorderLayout.NORTH);
+        cntPrincipal.add(tabbedPane       , BorderLayout.CENTER);
 
         setVisible(false); // deixa invisivel ate o usuario selecionar esse form
 

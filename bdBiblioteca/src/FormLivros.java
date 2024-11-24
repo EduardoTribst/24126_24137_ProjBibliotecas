@@ -120,7 +120,7 @@ public class FormLivros extends JFrame {
 
     public FormLivros(FrameBiblioteca controlador) {
         setTitle("Sistema de Biblioteca | Livros");
-        setSize(1000, 300);
+        setSize(1000, 600);
 
         // inicializa o frame principal
         framePrincipal = controlador;

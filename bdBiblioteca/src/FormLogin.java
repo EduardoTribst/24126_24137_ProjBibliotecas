@@ -42,7 +42,7 @@ public class FormLogin extends JFrame {
 
     public FormLogin(FrameBiblioteca controlador) {
         setTitle("Sistema de Biblioteca | Login");
-        setSize(800, 400);
+        setSize(800, 500);
 
         // inicializa o frame principal
         framePrincipal = controlador;
