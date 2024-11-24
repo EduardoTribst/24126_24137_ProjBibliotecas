@@ -1547,10 +1547,15 @@ public class FrameBiblioteca extends JFrame {
             pnlEmprestimos.add(pnlMensagem , BorderLayout.SOUTH);     	 // Painel de mensagens fica abaixo
 
             JPanel pnlAtrasados = new JPanel();
+            pnlAtrasados.setLayout(new BorderLayout());
 
             tabbedPane = new JTabbedPane();
             tabbedPane.addTab("Listar empréstimos", pnlEmprestimos);
             tabbedPane.addTab("Listar atrasados", pnlAtrasados);
+            pnlAtrasados.add(tbBotoes, BorderLayout.NORTH);
+
+            Container cntPrincipal = getContentPane();
+            cntPrincipal.add(tabbedPane);
 
             setVisible(false); // deixa invisivel ate o usuario selecionar esse form
 
@@ -1566,7 +1571,7 @@ public class FrameBiblioteca extends JFrame {
             String[] titulosColunasAtrasados = {"codigo","multa"};
             tabAtrasados = new JTable(dadosAtrasado,  titulosColunasAtrasados);
             JScrollPane barraRolagemAtrasados = new JScrollPane(tabAtrasados);
-            pnlGrade.add(barraRolagemAtrasados);
+            pnlAtrasados.add(barraRolagemAtrasados, BorderLayout.CENTER);
 
             pnlCampos.setLayout(new GridLayout(6, 2));	//  5 linhas e 2 colunas
             txtIdEmprestimo      = new JTextField();
