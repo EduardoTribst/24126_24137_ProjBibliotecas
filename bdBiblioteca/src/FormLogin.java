@@ -40,10 +40,6 @@ public class FormLogin extends JFrame {
     private Connection conexaoDados;
     public FrameBiblioteca framePrincipal;
 
-    public void setConexaoDados(Connection conexao) {
-        conexaoDados = conexao;
-    }
-
     public FormLogin(FrameBiblioteca controlador) {
         setTitle("Sistema de Biblioteca | Login");
         setSize(800, 400);

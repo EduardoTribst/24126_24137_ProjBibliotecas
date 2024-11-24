@@ -8,17 +8,24 @@ public class FrameBiblioteca extends JFrame {
 
     public static FrameBiblioteca form;
 
-    private FormLogin formLogin;
-    private FormLivros formLivros;
-    private FormExemplares formExemplares;
-    private FormEmprestimos formEmprestimos;
-    private FormDevolucoes formDevolucoes;
+    private static FormLogin formLogin;
+    private static FormLivros formLivros;
+    private static FormExemplares formExemplares;
+    private static FormEmprestimos formEmprestimos;
+    private static FormDevolucoes formDevolucoes;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 form = new FrameBiblioteca();
+
+                // inicializa os forms
+                formLogin       = new FormLogin(form);
+                formLivros      = new FormLivros(form);
+                formExemplares  = new FormExemplares(form);
+                formEmprestimos = new FormEmprestimos(form);
+                formDevolucoes  = new FormDevolucoes(form);
 
                 form.addWindowListener(
                         new WindowAdapter()
@@ -46,16 +53,6 @@ public class FrameBiblioteca extends JFrame {
         setSize(1000, 500);
         // apenas chame o evento windowClosing
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-        FrameBiblioteca controlador = new FrameBiblioteca();
-        // inicializa os forms
-        formLogin       = new FormLogin(controlador);
-        formLivros      = new FormLivros(controlador);
-        formExemplares  = new FormExemplares(controlador);
-        formEmprestimos = new FormEmprestimos(controlador);
-        formDevolucoes  = new FormDevolucoes(controlador);
-
-
     }
 
     public void setConexaoDados(Connection conexao) {
