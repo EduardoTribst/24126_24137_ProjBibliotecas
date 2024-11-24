@@ -240,9 +240,11 @@ public class FrameBiblioteca extends JFrame {
                             try {
                                 formEmprestimos.setVisible(true);
                                 formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
-//                                formEmprestimos.preencherDados();
-//                                formEmprestimos.exibirRegistro();
-//                                formEmprestimos.preencherTabela();
+                                formEmprestimos.preencherDadosEmprestimo();
+                                formEmprestimos.preencherDadosAtrasados();
+                                formEmprestimos.exibirRegistroEmprestimos();
+                                formEmprestimos.preencherTabelaEmprestimo();
+                                formEmprestimos.preencherTabelaAtrasados();
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -258,9 +260,7 @@ public class FrameBiblioteca extends JFrame {
                             try {
                                 formDevolucoes.setVisible(true);
                                 formDevolucoes.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
-//                                formDevolucoes.preencherDados();
-//                                formDevolucoes.exibirRegistro();
-//                                formDevolucoes.preencherTabela();
+                                // preenche e mostra dados
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -629,9 +629,11 @@ public class FrameBiblioteca extends JFrame {
                             try {
                                 formEmprestimos.setVisible(true);
                                 formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
-//                                formEmprestimos.preencherDados();
-//                                formEmprestimos.exibirRegistro();
-//                                formEmprestimos.preencherTabela();
+                                formEmprestimos.preencherDadosEmprestimo();
+                                formEmprestimos.preencherDadosAtrasados();
+                                formEmprestimos.exibirRegistroEmprestimos();
+                                formEmprestimos.preencherTabelaEmprestimo();
+                                formEmprestimos.preencherTabelaAtrasados();
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -879,7 +881,7 @@ public class FrameBiblioteca extends JFrame {
             }
         }
 
-        static private void exibirRegistro() throws SQLException {
+        private static void exibirRegistro() throws SQLException {
             if (!dadosDoSelect.rowDeleted()) {
                 txtIdExemplar.setText(String.valueOf(dadosDoSelect.getInt("idExemplar")));
                 txtIdBiblioteca.setText(String.valueOf(dadosDoSelect.getInt("idBiblioteca")));
@@ -1096,9 +1098,11 @@ public class FrameBiblioteca extends JFrame {
                             try {
                                 formEmprestimos.setVisible(true);
                                 formEmprestimos.setIdBibliotecaEscolhida(idBibliotecaEscolhida);
-//                                formEmprestimos.preencherDados();
-//                                formEmprestimos.exibirRegistro();
-//                                formEmprestimos.preencherTabela();
+                                formEmprestimos.preencherDadosEmprestimo();
+                                formEmprestimos.preencherDadosAtrasados();
+                                formEmprestimos.exibirRegistroEmprestimos();
+                                formEmprestimos.preencherTabelaEmprestimo();
+                                formEmprestimos.preencherTabelaAtrasados();
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -1376,7 +1380,7 @@ public class FrameBiblioteca extends JFrame {
         }
 
         private void preencherDadosAtrasados() {
-            String sql = "SELECT * FROM SisBib.AtrasoEMultas where codigo exists(select idExemplar from sisbib.Exemplar where idBiblioteca = " + idBibliotecaEscolhida + ") order by codigo";
+            String sql = "SELECT * FROM SisBib.AtrasoEMultas where codigo in(select idExemplar from sisbib.Exemplar where idBiblioteca = " + idBibliotecaEscolhida + ") order by codigo";
             try {
                 Statement comandoSQL = conexaoDados.createStatement(
                         ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
@@ -1644,113 +1648,113 @@ public class FrameBiblioteca extends JFrame {
 
             // Operações CRUD
             // Inserção
-            btnIncluir.addActionListener(
-                    new ActionListener()
-                    {
-                        @Override
-                        public void actionPerformed(ActionEvent e)
-                        {    // Lógica da inclusão
-                            try
-                            {
-                                dadosDoSelectEmprestimos.moveToInsertRow();
-                                dadosDoSelectEmprestimos.updateString("codLivro", txtCodLivro.getText());
-                                dadosDoSelectEmprestimos.updateString("titulo", txtTitulo.getText());
-                                dadosDoSelectEmprestimos.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
-                                dadosDoSelectEmprestimos.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
-                                dadosDoSelectEmprestimos.updateString("ISBN", txtISBN.getText());
-                                dadosDoSelectEmprestimos.insertRow();
-                                JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
-                            }
-                            catch (SQLException ex)
-                            {
-                                System.out.println(ex.getMessage());
-                            }
-                        }
-                    }
-            );
-
-            // Atualização
-            btnSalvar.addActionListener(
-                    new ActionListener()
-                    {
-                        @Override
-                        public void actionPerformed(ActionEvent e)
-                        {        // lógica da atualização
-                            try
-                            {
-                                dadosDoSelectEmprestimos.updateString("titulo", txtTitulo.getText());
-                                dadosDoSelectEmprestimos.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
-                                dadosDoSelectEmprestimos.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
-                                dadosDoSelectEmprestimos.updateString("ISBN", txtISBN.getText());
-                                dadosDoSelectEmprestimos.updateRow();
-                                JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
-                            }
-                            catch (SQLException ex)
-                            {
-                                System.out.println(ex.getMessage());
-                            }
-                        }
-                    }
-            );
-
-            // Exclusão
-            btnExcluir.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            try
-                            {
-                                if (JOptionPane.showConfirmDialog(
-                                        null, "Deseja realmente excluir?") ==
-                                        JOptionPane.OK_OPTION)
-                                {
-                                    dadosDoSelectEmprestimos.deleteRow();
-                                    JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
-//                                    exibirRegistro();   // exibe o próximo registro
-                                }
-                            }
-                            catch (SQLException ex)
-                            {
-                                System.out.println(ex.getMessage());
-                            }
-                        }
-                    }
-            );
-
-            // Consulta
-            btnBuscar.addActionListener(
-                    new ActionListener()
-                    {
-                        @Override
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            try
-                            {
-                                int posicaoAnterior = dadosDoSelectEmprestimos.getRow();  // registro atual
-                                String chaveProcurada = txtCodLivro.getText();
-                                dadosDoSelectEmprestimos.beforeFirst();      // posiciona antes do 1o registro
-                                boolean achou = false;
-                                while (! achou && dadosDoSelectEmprestimos.next())
-                                {
-                                    if (dadosDoSelectEmprestimos.getString("codLivro").compareTo(chaveProcurada) == 0)
-                                        achou = true;
-                                }
-                                if (!achou)
-                                {
-                                    JOptionPane.showMessageDialog(null, "Registro não encontrado!");
-                                    dadosDoSelectEmprestimos.absolute(posicaoAnterior);  // retorna ao registro
-                                    // anteriormente visível
-                                }
-                                preencherTabelaEmprestimo();   // exibe o registro encontrado ou o original
-                            }
-                            catch (SQLException exception)
-                            {
-                                throw new RuntimeException(exception);
-                            }
-                        }
-                    }
-            );
+//            btnIncluir.addActionListener(
+//                    new ActionListener()
+//                    {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e)
+//                        {    // Lógica da inclusão
+//                            try
+//                            {
+//                                dadosDoSelectEmprestimos.moveToInsertRow();
+//                                dadosDoSelectEmprestimos.updateString("codLivro", txtCodLivro.getText());
+//                                dadosDoSelectEmprestimos.updateString("titulo", txtTitulo.getText());
+//                                dadosDoSelectEmprestimos.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
+//                                dadosDoSelectEmprestimos.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
+//                                dadosDoSelectEmprestimos.updateString("ISBN", txtISBN.getText());
+//                                dadosDoSelectEmprestimos.insertRow();
+//                                JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
+//                            }
+//                            catch (SQLException ex)
+//                            {
+//                                System.out.println(ex.getMessage());
+//                            }
+//                        }
+//                    }
+//            );
+//
+//            // Atualização
+//            btnSalvar.addActionListener(
+//                    new ActionListener()
+//                    {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e)
+//                        {        // lógica da atualização
+//                            try
+//                            {
+//                                dadosDoSelectEmprestimos.updateString("titulo", txtTitulo.getText());
+//                                dadosDoSelectEmprestimos.updateInt("idAutor", Integer.parseInt(txtIdAutor.getText()));
+//                                dadosDoSelectEmprestimos.updateInt("idArea", Integer.parseInt(txtIdArea.getText()));
+//                                dadosDoSelectEmprestimos.updateString("ISBN", txtISBN.getText());
+//                                dadosDoSelectEmprestimos.updateRow();
+//                                JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
+//                            }
+//                            catch (SQLException ex)
+//                            {
+//                                System.out.println(ex.getMessage());
+//                            }
+//                        }
+//                    }
+//            );
+//
+//            // Exclusão
+//            btnExcluir.addActionListener(
+//                    new ActionListener() {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e)
+//                        {
+//                            try
+//                            {
+//                                if (JOptionPane.showConfirmDialog(
+//                                        null, "Deseja realmente excluir?") ==
+//                                        JOptionPane.OK_OPTION)
+//                                {
+//                                    dadosDoSelectEmprestimos.deleteRow();
+//                                    JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
+////                                    exibirRegistro();   // exibe o próximo registro
+//                                }
+//                            }
+//                            catch (SQLException ex)
+//                            {
+//                                System.out.println(ex.getMessage());
+//                            }
+//                        }
+//                    }
+//            );
+//
+//            // Consulta
+//            btnBuscar.addActionListener(
+//                    new ActionListener()
+//                    {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e)
+//                        {
+//                            try
+//                            {
+//                                int posicaoAnterior = dadosDoSelectEmprestimos.getRow();  // registro atual
+//                                String chaveProcurada = txtCodLivro.getText();
+//                                dadosDoSelectEmprestimos.beforeFirst();      // posiciona antes do 1o registro
+//                                boolean achou = false;
+//                                while (! achou && dadosDoSelectEmprestimos.next())
+//                                {
+//                                    if (dadosDoSelectEmprestimos.getString("codLivro").compareTo(chaveProcurada) == 0)
+//                                        achou = true;
+//                                }
+//                                if (!achou)
+//                                {
+//                                    JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+//                                    dadosDoSelectEmprestimos.absolute(posicaoAnterior);  // retorna ao registro
+//                                    // anteriormente visível
+//                                }
+//                                preencherTabelaEmprestimo();   // exibe o registro encontrado ou o original
+//                            }
+//                            catch (SQLException exception)
+//                            {
+//                                throw new RuntimeException(exception);
+//                            }
+//                        }
+//                    }
+//            );
 
 
             // Navegação entre registros
