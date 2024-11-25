@@ -385,120 +385,133 @@ public class FormEmprestimos extends JFrame {
 
         // Operações CRUD
         // Inserção
-            btnIncluir.addActionListener(
-                    new ActionListener()
-                    {
-                        @Override
-                        public void actionPerformed(ActionEvent e)
-                        {    // Lógica da inclusão
-                            try
-                            {
-                                dadosDoSelectEmprestimos.moveToInsertRow();
-                                dadosDoSelectEmprestimos.updateString("idLeitor", txtIdLeitor.getText());
-                                dadosDoSelectEmprestimos.updateString("idExemplar", txtIdExemplar.getText());
-                                dadosDoSelectEmprestimos.updateDate("dataEmprestimo", Date.valueOf(txtDataEmprestimo.getText()));
+        btnIncluir.addActionListener(
+                new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {    // Lógica da inclusão
+                        try
+                        {
+                            dadosDoSelectEmprestimos.moveToInsertRow();
+                            dadosDoSelectEmprestimos.updateString("idLeitor", txtIdLeitor.getText());
+                            dadosDoSelectEmprestimos.updateString("idExemplar", txtIdExemplar.getText());
+                            dadosDoSelectEmprestimos.updateDate("dataEmprestimo", Date.valueOf(txtDataEmprestimo.getText()));
+                            dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", null);
+                            dadosDoSelectEmprestimos.updateDate("devolucaoPrevista", Date.valueOf(txtDevolucaoPrevista.getText()));
+                            dadosDoSelectEmprestimos.insertRow();
+                            JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
+                        }
+                        catch (SQLException ex)
+                        {
+                            System.out.println(ex.getMessage());
+                        }
+                    }
+                }
+        );
+
+        // Atualização
+        btnSalvar.addActionListener(
+                new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {        // lógica da atualização
+                        try
+                        {
+                            dadosDoSelectEmprestimos.updateString("idLeitor", txtIdLeitor.getText());
+                            dadosDoSelectEmprestimos.updateString("idExemplar", txtIdExemplar.getText());
+                            dadosDoSelectEmprestimos.updateDate("dataEmprestimo", Date.valueOf(txtDataEmprestimo.getText()));
+                            if (txtDevolucaoEfetiva.getText().toLowerCase().compareTo("null") == 0) {
                                 dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", null);
-                                dadosDoSelectEmprestimos.updateDate("devolucaoPrevista", Date.valueOf(txtDevolucaoPrevista.getText()));
-                                dadosDoSelectEmprestimos.insertRow();
-                                JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
                             }
-                            catch (SQLException ex)
-                            {
-                                System.out.println(ex.getMessage());
+                            else {
+                                dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", Date.valueOf(txtDevolucaoEfetiva.getText()));
                             }
+                            dadosDoSelectEmprestimos.updateDate("devolucaoPrevista", Date.valueOf(txtDevolucaoPrevista.getText()));
+                            dadosDoSelectEmprestimos.updateRow();
+                            JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
                         }
-                    }
-            );
-
-            // Atualização
-            btnSalvar.addActionListener(
-                    new ActionListener()
-                    {
-                        @Override
-                        public void actionPerformed(ActionEvent e)
-                        {        // lógica da atualização
-                            try
-                            {
-                                dadosDoSelectEmprestimos.updateString("idLeitor", txtIdLeitor.getText());
-                                dadosDoSelectEmprestimos.updateString("idExemplar", txtIdExemplar.getText());
-                                dadosDoSelectEmprestimos.updateDate("dataEmprestimo", Date.valueOf(txtDataEmprestimo.getText()));
-                                if (txtDevolucaoEfetiva.getText().toLowerCase().compareTo("null") == 0) {
-                                    dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", null);
-                                }
-                                else {
-                                    dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", Date.valueOf(txtDevolucaoEfetiva.getText()));
-                                }
-                                dadosDoSelectEmprestimos.updateDate("devolucaoPrevista", Date.valueOf(txtDevolucaoPrevista.getText()));
-                                dadosDoSelectEmprestimos.updateRow();
-                                JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
-                            }
-                            catch (SQLException ex)
-                            {
-                                System.out.println(ex.getMessage());
-                            }
-                        }
-                    }
-            );
-
-            // Exclusão
-            btnExcluir.addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e)
+                        catch (SQLException ex)
                         {
-                            try
-                            {
-                                if (JOptionPane.showConfirmDialog(
-                                        null, "Deseja realmente excluir?") ==
-                                        JOptionPane.OK_OPTION)
-                                {
-                                    dadosDoSelectEmprestimos.deleteRow();
-                                    JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
-                                    dadosDoSelectEmprestimos.next();
-                                    exibirRegistroEmprestimos();   // exibe o próximo registro
-                                }
-                            }
-                            catch (SQLException ex)
-                            {
-                                System.out.println(ex.getMessage());
-                            }
+                            System.out.println(ex.getMessage());
                         }
                     }
-            );
+                }
+        );
 
-            // Consulta
-            btnBuscar.addActionListener(
-                    new ActionListener()
+        // Exclusão
+        btnExcluir.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
                     {
-                        @Override
-                        public void actionPerformed(ActionEvent e)
+                        try
                         {
-                            try
+                            if (JOptionPane.showConfirmDialog(
+                                    null, "Deseja realmente excluir?") ==
+                                    JOptionPane.OK_OPTION)
                             {
-                                int posicaoAnterior = dadosDoSelectEmprestimos.getRow();  // registro atual
-                                String chaveProcurada = txtIdEmprestimo.getText();
-                                dadosDoSelectEmprestimos.beforeFirst();      // posiciona antes do 1o registro
-                                boolean achou = false;
-                                while (! achou && dadosDoSelectEmprestimos.next())
-                                {
-                                    if (dadosDoSelectEmprestimos.getString("idEmprestimo").compareTo(chaveProcurada) == 0)
-                                        achou = true;
-                                }
-                                if (!achou)
-                                {
-                                    JOptionPane.showMessageDialog(null, "Registro não encontrado!");
-                                    dadosDoSelectEmprestimos.absolute(posicaoAnterior);  // retorna ao registro
-                                    // anteriormente visível
-                                }
-                                preencherTabelaEmprestimo();   // exibe o registro encontrado ou o original
-                            }
-                            catch (SQLException exception)
-                            {
-                                throw new RuntimeException(exception);
+                                dadosDoSelectEmprestimos.deleteRow();
+                                JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
+                                dadosDoSelectEmprestimos.next();
+                                exibirRegistroEmprestimos();   // exibe o próximo registro
                             }
                         }
+                        catch (SQLException ex)
+                        {
+                            System.out.println(ex.getMessage());
+                        }
                     }
-            );
+                }
+        );
+
+        // Consulta
+        btnBuscar.addActionListener(
+                new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        try
+                        {
+                            int posicaoAnterior = dadosDoSelectEmprestimos.getRow();  // registro atual
+                            String chaveProcurada = txtIdEmprestimo.getText();
+                            dadosDoSelectEmprestimos.beforeFirst();      // posiciona antes do 1o registro
+                            boolean achou = false;
+                            while (! achou && dadosDoSelectEmprestimos.next())
+                            {
+                                if (dadosDoSelectEmprestimos.getString("idEmprestimo").compareTo(chaveProcurada) == 0)
+                                    achou = true;
+                            }
+                            if (!achou)
+                            {
+                                JOptionPane.showMessageDialog(null, "Registro não encontrado!");
+                                dadosDoSelectEmprestimos.absolute(posicaoAnterior);  // retorna ao registro
+                                // anteriormente visível
+                            }
+                            preencherTabelaEmprestimo();   // exibe o registro encontrado ou o original
+                        }
+                        catch (SQLException exception)
+                        {
+                            throw new RuntimeException(exception);
+                        }
+                    }
+                }
+        );
+
+        btnCancelar.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            exibirRegistroEmprestimos();
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                }
+        );
 
         // Navegação entre registros
 

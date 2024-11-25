@@ -413,6 +413,19 @@ public class FormExemplares extends JFrame {
                 }
         );
 
+        btnCancelar.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            exibirRegistro();
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                }
+        );
+
 
         // Navegação entre registros
 
