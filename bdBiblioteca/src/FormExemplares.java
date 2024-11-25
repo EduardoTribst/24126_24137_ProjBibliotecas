@@ -10,7 +10,8 @@ public class FormExemplares extends JFrame {
 
     private  JTextField txtIdExemplar, txtIdBiblioteca, txtCodLivro, txtNumeroExemplar;
 
-    private JTable tabExemplar;	// controle que exibe dados em formato tabular (linhas e colunas)
+    private JTable tabExemplar;// controle que exibe dados em formato tabular (linhas e colunas)
+    private DefaultTableModel modelo;
 
     // acoes crud
     private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
@@ -66,7 +67,7 @@ public class FormExemplares extends JFrame {
                 System.out.print(dadosDoSelect);
                 if (dadosDoSelect.next()) {
                     exibirRegistro();
-                    //preencherTabela();
+                    preencherTabela();
                 } else {
                     JOptionPane.showMessageDialog(null, "Registro não encontrado!");
                 }
@@ -81,10 +82,19 @@ public class FormExemplares extends JFrame {
     }
 
     public void preencherTabela() throws SQLException {
-        do{
-            // preencher tabela
+        DefaultTableModel model = (DefaultTableModel) tabExemplar.getModel();
+        String[] titulosColunas = {"Id Exemplar","Id Biblioteca","Codigo Livro","Número Exemplar"};
+        while(dadosDoSelect.next()) {
+
+            String idExemplar = dadosDoSelect.getString(1);
+            String idBiblioteca = dadosDoSelect.getString(2);
+            String codLivro = dadosDoSelect.getString(3);
+            String numExemplar = dadosDoSelect.getString(4);
+            model.addRow(new String[]{idExemplar, idBiblioteca, codLivro, numExemplar});
         }
-        while (dadosDoSelect.next());
+
+        tabExemplar.setModel(model);
+        tabExemplar.repaint();
     }
 
     public void irParaPrimeiroRegistro() {
@@ -231,7 +241,8 @@ public class FormExemplares extends JFrame {
 
         Object [][] dadosLivro = {};
         String[] titulosColunas = {"Id Exemplar","Id Biblioteca","Codigo Livro","Número Exemplar"};
-        tabExemplar = new JTable(dadosLivro,  titulosColunas);
+        modelo = new DefaultTableModel(titulosColunas, 0);
+        tabExemplar = new JTable(modelo);
         JScrollPane barraRolagem = new JScrollPane(tabExemplar);
         pnlGrade.add(barraRolagem);
 

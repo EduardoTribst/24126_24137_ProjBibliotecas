@@ -13,9 +13,6 @@ public class FormLivros extends JFrame {
     private JTable tabLivro;	// controle que exibe dados em formato tabular (linhas e colunas)
 
     private DefaultTableModel modelo;
-    private String[] colunas;
-    private String[][] linhas;
-    private int quantasLinhas = 0;
 
     // acoes crud
     private JToolBar tbBotoes; // armazenará os botões abaixo; será colocado no topo do formulári
@@ -247,7 +244,8 @@ public class FormLivros extends JFrame {
 
         Object [][] dadosLivro = {};
         String[] titulosColunas = {"codigo Livro","titulo","id Autor","id Area"};
-        tabLivro = new JTable(dadosLivro, titulosColunas);
+        modelo = new DefaultTableModel(titulosColunas, 0);
+        tabLivro = new JTable(modelo);
         tabLivro.setVisible(true);
         JScrollPane barraRolagem = new JScrollPane(tabLivro);
         pnlGrade.add(barraRolagem);

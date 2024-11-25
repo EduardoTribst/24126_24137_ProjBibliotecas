@@ -11,7 +11,8 @@ public class FormEmprestimos extends JFrame {
 
     private JTextField txtIdEmprestimo, txtIdLeitor, txtIdExemplar, txtDataEmprestimo, txtDevolucaoEfetiva, txtDevolucaoPrevista;
 
-    private JTable tabEmprestimos, tabAtrasados;	// controle que exibe dados em formato tabular (linhas e colunas)
+    private JTable tabEmprestimos, tabAtrasados;// controle que exibe dados em formato tabular (linhas e colunas)
+    private DefaultTableModel modEmprestimos, modAtrasados;
 
     // tab que alterna entre emprestimos e livros em atraso
 
@@ -99,12 +100,37 @@ public class FormEmprestimos extends JFrame {
         }
     }
 
-    public void preencherTabelaEmprestimo() {
-        // dps faz
+    public void preencherTabelaEmprestimo() throws SQLException {
+        DefaultTableModel model = (DefaultTableModel) tabEmprestimos.getModel();
+        String[] titulosColunas = {"Id Empréstimo","Id Leitor","Id Exemplar","Data do Empréstimo", "Data da Devolução Efetiva", "Data Devolução Prevista"};
+        while(dadosDoSelectEmprestimos.next()) {
+
+            String idEmprestimo = dadosDoSelectEmprestimos.getString(1);
+            String idLeitor = dadosDoSelectEmprestimos.getString(2);
+            String idExemplar = dadosDoSelectEmprestimos.getString(3);
+            String DataEmprestimo = dadosDoSelectEmprestimos.getString(4);
+            String DataDevPrev = dadosDoSelectEmprestimos.getString(5);
+            String DataDevEfet = dadosDoSelectEmprestimos.getString(6);
+            model.addRow(new String[]{idEmprestimo, idLeitor, idExemplar, DataEmprestimo, DataDevPrev, DataDevEfet});
+        }
+
+        tabEmprestimos.setModel(model);
+        tabEmprestimos.repaint();
     }
 
-    public void preencherTabelaAtrasados() {
-        // dps faz
+    public void preencherTabelaAtrasados() throws SQLException {
+        DefaultTableModel model = (DefaultTableModel) tabAtrasados.getModel();
+        String[] titulosColunas = {"Id Empréstimo","Id Leitor","Id Exemplar","Data do Empréstimo", "Data da Devolução Efetiva", "Data Devolução Prevista"};
+        while(dadosDoSelectAtrasados.next()) {
+
+            String codigo = dadosDoSelectAtrasados.getString(1);
+            String multa = dadosDoSelectAtrasados.getString(2);
+
+            model.addRow(new String[]{codigo, multa});
+        }
+
+        tabAtrasados.setModel(model);
+        tabAtrasados.repaint();
     }
 
     public void exibirRegistroEmprestimos() throws SQLException {
@@ -278,14 +304,16 @@ public class FormEmprestimos extends JFrame {
         // tab emprestimos
         Object [][] dadosEmprestimo = {};
         String[] titulosColunas = {"Id Empréstimo","Id Leitor","Id Exemplar","Data do Empréstimo", "Data da Devolução Efetiva", "Data Devolução Prevista"};
-        tabEmprestimos = new JTable(dadosEmprestimo,  titulosColunas);
+        modEmprestimos = new DefaultTableModel(titulosColunas, 0);
+        tabEmprestimos = new JTable(modEmprestimos);
         JScrollPane barraRolagem = new JScrollPane(tabEmprestimos);
         pnlGrade.add(barraRolagem);
 
         // tab de atrasados
         Object [][] dadosAtrasado = {};
         String[] titulosColunasAtrasados = {"codigo","multa"};
-        tabAtrasados = new JTable(dadosAtrasado,  titulosColunasAtrasados);
+        modAtrasados = new DefaultTableModel(titulosColunasAtrasados, 0);
+        tabAtrasados = new JTable(modAtrasados);
         JScrollPane barraRolagemAtrasados = new JScrollPane(tabAtrasados);
         pnlAtrasados.add(barraRolagemAtrasados, BorderLayout.CENTER);
 
