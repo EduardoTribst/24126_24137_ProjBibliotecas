@@ -59,6 +59,7 @@ public class FormExemplares extends JFrame {
             Statement comandoSQL = conexaoDados.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE,	// permite navegação
                     ResultSet.CONCUR_UPDATABLE        // ResultSet é atualizável
+
             );
             try {
                 dadosDoSelect = comandoSQL.executeQuery(sql);
@@ -305,7 +306,6 @@ public class FormExemplares extends JFrame {
                         try
                         {
                             dadosDoSelect.moveToInsertRow();
-                            dadosDoSelect.updateInt("idExemplar", Integer.parseInt(txtIdExemplar.getText()));
                             dadosDoSelect.updateInt("idBiblioteca", Integer.parseInt(txtIdBiblioteca.getText()));
                             dadosDoSelect.updateString("codLivro", txtCodLivro.getText());
                             dadosDoSelect.updateInt("numeroExemplar", Integer.parseInt(txtNumeroExemplar.getText()));

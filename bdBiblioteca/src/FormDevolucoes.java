@@ -108,13 +108,13 @@ public class FormDevolucoes extends JFrame {
 
         // inicializa os campos de texto
 
-        pnlCampos.setLayout(new GridLayout(3, 2));	//  5 linhas e 2 colunas
+        pnlCampos.setLayout(new GridLayout(3, 2));	//  3 linhas e 2 colunas
         txtIdLeitor       = new JTextField();
         txtCodLivro       = new JTextField();
         txtNumeroExemplar = new JTextField();
 
         pnlCampos.add(new JLabel("Id leitor"));          // 1, 1
-        pnlCampos.add(txtCodLivro);                           // 1, 2
+        pnlCampos.add(txtIdLeitor);                           // 1, 2
         pnlCampos.add(new JLabel("Código do Livro:"));   // 2, 1
         pnlCampos.add(txtCodLivro);					          // 2, 2
         pnlCampos.add(new JLabel("Numero do exemplar:"));// 3, 1
@@ -213,15 +213,8 @@ public class FormDevolucoes extends JFrame {
                                             try {
                                                 CallableStatement calStatement = conexaoDados.prepareCall(sql);
                                                 calStatement.setInt(1, dadosDoSelect.getInt("idLeitor"));
-
-                                                boolean result = calStatement.execute();
-
-                                                if (result) {
-                                                    JOptionPane.showMessageDialog(null, "Leitor suspenso.");
-                                                }
-                                                else {
-                                                    JOptionPane.showMessageDialog(null, "Ocorreu um erro ao suspenser leitor.");
-                                                }
+                                                calStatement.execute();
+                                                JOptionPane.showMessageDialog(null, "Leitor suspenso.");
                                             } catch (SQLException ex) {
                                                 throw new RuntimeException(ex);
                                             }
