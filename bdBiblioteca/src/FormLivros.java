@@ -87,7 +87,7 @@ public class FormLivros extends JFrame {
     }
 
     public void preencherTabela() throws SQLException {
-        DefaultTableModel model = tabLivro.getModel();
+        DefaultTableModel model = (DefaultTableModel) tabLivro.getModel();
 
         while(dadosDoSelect.next()) {
 
