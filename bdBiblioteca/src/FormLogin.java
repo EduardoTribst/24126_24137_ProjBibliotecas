@@ -237,6 +237,7 @@ public class FormLogin extends JFrame {
         model.setSelected(true);
         datePicker.setVisible(true);
         JPanel painelCalendario = new JPanel();
+        painelCalendario.add(new JLabel("Calendário"));
         painelCalendario.add(datePicker);
         cntForm.add(painelCalendario,BorderLayout.EAST); //para ficar ao leste do formulario
 
