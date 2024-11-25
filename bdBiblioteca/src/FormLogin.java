@@ -3,6 +3,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Properties;
+
+import org.jdatepicker.impl.*;
 
 public class FormLogin extends JFrame {
     private JLabel labMensagem;
@@ -131,6 +134,8 @@ public class FormLogin extends JFrame {
         panMensagem.setLayout(new FlowLayout(FlowLayout.LEFT));
         panMensagem.add(labMensagem);
 
+        // action listeners
+
         btnConectar.addActionListener(
                 new ActionListener() {
                     @Override
@@ -220,11 +225,26 @@ public class FormLogin extends JFrame {
         cntForm.add(tbBotoesNavegacao, BorderLayout.NORTH);
         cntForm.add(westPanel, BorderLayout.WEST);
 
-        setVisible(true);
+        // calendario
+        UtilDateModel model = new UtilDateModel();
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePicker.setBounds(110, 100, 200, 25);
+        model.setSelected(true);
+        datePicker.setVisible(true);
+        JPanel painelCalendario = new JPanel();
+        painelCalendario.add(datePicker);
+        cntForm.add(painelCalendario,BorderLayout.EAST); //para ficar ao leste do formulario
 
+        setVisible(true);
     }
 
     private void preencherCbxBibliotecas() {
+        cbxBiblioteca.removeAllItems();
         String sql = "SELECT * FROM SisBib.biblioteca order by idBiblioteca";
         try {
             Statement comandoSQL = conexaoDados.createStatement(
