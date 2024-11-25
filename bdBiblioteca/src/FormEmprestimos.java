@@ -394,7 +394,12 @@ public class FormEmprestimos extends JFrame {
                                 dadosDoSelectEmprestimos.updateString("idLeitor", txtIdLeitor.getText());
                                 dadosDoSelectEmprestimos.updateString("idExemplar", txtIdExemplar.getText());
                                 dadosDoSelectEmprestimos.updateDate("dataEmprestimo", Date.valueOf(txtDataEmprestimo.getText()));
-                                dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", Date.valueOf(txtDevolucaoEfetiva.getText()));
+                                if (txtDevolucaoEfetiva.getText().toLowerCase().compareTo("null") == 0) {
+                                    dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", null);
+                                }
+                                else {
+                                    dadosDoSelectEmprestimos.updateDate("devolucaoEfetiva", Date.valueOf(txtDevolucaoEfetiva.getText()));
+                                }
                                 dadosDoSelectEmprestimos.updateDate("devolucaoPrevista", Date.valueOf(txtDevolucaoPrevista.getText()));
                                 dadosDoSelectEmprestimos.updateRow();
                                 JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
@@ -421,6 +426,7 @@ public class FormEmprestimos extends JFrame {
                                 {
                                     dadosDoSelectEmprestimos.deleteRow();
                                     JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
+                                    dadosDoSelectEmprestimos.next();
                                     exibirRegistroEmprestimos();   // exibe o próximo registro
                                 }
                             }
