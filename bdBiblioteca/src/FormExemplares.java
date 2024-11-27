@@ -84,13 +84,15 @@ public class FormExemplares extends JFrame {
     public void preencherTabela() throws SQLException {
         DefaultTableModel model = (DefaultTableModel) tabExemplar.getModel();
         String[] titulosColunas = {"Id Exemplar","Id Biblioteca","Codigo Livro","Número Exemplar"};
+        dadosDoSelect.beforeFirst();
         while(dadosDoSelect.next()) {
-
-            String idExemplar = dadosDoSelect.getString(1);
-            String idBiblioteca = dadosDoSelect.getString(2);
-            String codLivro = dadosDoSelect.getString(3);
-            String numExemplar = dadosDoSelect.getString(4);
-            model.addRow(new String[]{idExemplar, idBiblioteca, codLivro, numExemplar});
+            if (!dadosDoSelect.rowDeleted()) {
+                String idExemplar = dadosDoSelect.getString(1);
+                String idBiblioteca = dadosDoSelect.getString(2);
+                String codLivro = dadosDoSelect.getString(3);
+                String numExemplar = dadosDoSelect.getString(4);
+                model.addRow(new String[]{idExemplar, idBiblioteca, codLivro, numExemplar});
+            }
         }
 
         tabExemplar.setModel(model);
@@ -368,7 +370,10 @@ public class FormExemplares extends JFrame {
                             {
                                 dadosDoSelect.deleteRow();
                                 JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
-                                exibirRegistro();   // exibe o próximo registro
+
+                                dadosDoSelect.first();
+                                exibirRegistro();
+                                preencherTabela();
                             }
                         }
                         catch (SQLException ex)

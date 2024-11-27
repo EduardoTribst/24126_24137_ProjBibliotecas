@@ -85,15 +85,18 @@ public class FormLivros extends JFrame {
 
     public void preencherTabela() throws SQLException {
         DefaultTableModel model = (DefaultTableModel) tabLivro.getModel();
+        model.getDataVector().removeAllElements();
 
+        dadosDoSelect.beforeFirst();
         while(dadosDoSelect.next()) {
-
-            String codLivro = dadosDoSelect.getString(1);
-            String titulo = dadosDoSelect.getString(2);
-            String autor = dadosDoSelect.getString(3);
-            String area = dadosDoSelect.getString(4);
-            String isbn = dadosDoSelect.getString(5);
-            model.addRow(new String[]{codLivro, titulo, autor, area, isbn});
+            if (!dadosDoSelect.rowDeleted()) {
+                String codLivro = dadosDoSelect.getString(1);
+                String titulo = dadosDoSelect.getString(2);
+                String autor = dadosDoSelect.getString(3);
+                String area = dadosDoSelect.getString(4);
+                String isbn = dadosDoSelect.getString(5);
+                model.addRow(new String[]{codLivro, titulo, autor, area, isbn});
+            }
         }
 
         tabLivro.setModel(model);
@@ -330,6 +333,9 @@ public class FormLivros extends JFrame {
                             dadosDoSelect.updateString("ISBN", txtISBN.getText());
                             dadosDoSelect.insertRow();
                             JOptionPane.showMessageDialog(null, "Inclusão bem sucedida!");
+
+                            preencherTabela();
+                            exibirRegistro();
                         }
                         catch (SQLException ex)
                         {
@@ -354,6 +360,9 @@ public class FormLivros extends JFrame {
                             dadosDoSelect.updateString("ISBN", txtISBN.getText());
                             dadosDoSelect.updateRow();
                             JOptionPane.showMessageDialog(null,"Atualização bem sucedida!");
+
+                            preencherTabela();
+                            exibirRegistro();
                         }
                         catch (SQLException ex)
                         {
@@ -377,7 +386,9 @@ public class FormLivros extends JFrame {
                             {
                                 dadosDoSelect.deleteRow();
                                 JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
-                                exibirRegistro();   // exibe o próximo registro
+                                dadosDoSelect.first();
+                                exibirRegistro();
+                                preencherTabela();
                             }
                         }
                         catch (SQLException ex)

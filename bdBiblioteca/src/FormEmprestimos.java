@@ -103,15 +103,17 @@ public class FormEmprestimos extends JFrame {
     public void preencherTabelaEmprestimo() throws SQLException {
         DefaultTableModel model = (DefaultTableModel) tabEmprestimos.getModel();
         String[] titulosColunas = {"Id Empréstimo","Id Leitor","Id Exemplar","Data do Empréstimo", "Data da Devolução Efetiva", "Data Devolução Prevista"};
+        dadosDoSelectEmprestimos.beforeFirst();
         while(dadosDoSelectEmprestimos.next()) {
-
-            String idEmprestimo = dadosDoSelectEmprestimos.getString(1);
-            String idLeitor = dadosDoSelectEmprestimos.getString(2);
-            String idExemplar = dadosDoSelectEmprestimos.getString(3);
-            String DataEmprestimo = dadosDoSelectEmprestimos.getString(4);
-            String DataDevPrev = dadosDoSelectEmprestimos.getString(5);
-            String DataDevEfet = dadosDoSelectEmprestimos.getString(6);
-            model.addRow(new String[]{idEmprestimo, idLeitor, idExemplar, DataEmprestimo, DataDevPrev, DataDevEfet});
+            if (!dadosDoSelectEmprestimos.rowDeleted()) {
+                String idEmprestimo = dadosDoSelectEmprestimos.getString(1);
+                String idLeitor = dadosDoSelectEmprestimos.getString(2);
+                String idExemplar = dadosDoSelectEmprestimos.getString(3);
+                String DataEmprestimo = dadosDoSelectEmprestimos.getString(4);
+                String DataDevPrev = dadosDoSelectEmprestimos.getString(5);
+                String DataDevEfet = dadosDoSelectEmprestimos.getString(6);
+                model.addRow(new String[]{idEmprestimo, idLeitor, idExemplar, DataEmprestimo, DataDevPrev, DataDevEfet});
+            }
         }
 
         tabEmprestimos.setModel(model);
@@ -122,7 +124,6 @@ public class FormEmprestimos extends JFrame {
         DefaultTableModel model = (DefaultTableModel) tabAtrasados.getModel();
         String[] titulosColunas = {"Id Empréstimo","Id Leitor","Id Exemplar","Data do Empréstimo", "Data da Devolução Efetiva", "Data Devolução Prevista"};
         while(dadosDoSelectAtrasados.next()) {
-
             String codigo = dadosDoSelectAtrasados.getString(1);
             String multa = dadosDoSelectAtrasados.getString(2);
 
@@ -454,8 +455,10 @@ public class FormEmprestimos extends JFrame {
                             {
                                 dadosDoSelectEmprestimos.deleteRow();
                                 JOptionPane.showMessageDialog(null, "Exclusão bem sucedida!");
-                                dadosDoSelectEmprestimos.next();
-                                exibirRegistroEmprestimos();   // exibe o próximo registro
+
+                                dadosDoSelectEmprestimos.first();
+                                exibirRegistroEmprestimos();
+                                preencherTabelaEmprestimo();
                             }
                         }
                         catch (SQLException ex)
