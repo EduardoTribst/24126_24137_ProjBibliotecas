@@ -143,6 +143,7 @@ public class FormLogin extends JFrame {
                         try {
                             conexaoDados = ConexaoBD.getConnection(txtServidor.getText(), txtNomeBd.getText(), txtUsuario.getText(), pswfPassword.getPassword());
                             labMensagem.setText("Mensagem: conectado!");
+                            btnConectar.setEnabled(false);
                             cbxBiblioteca.setEnabled(true);
                             preencherCbxBibliotecas();
                         } catch (SQLException err) {
